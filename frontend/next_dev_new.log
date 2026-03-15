@@ -31,3 +31,99 @@ nohup: ignoring input
 ⚠ Cross origin request detected from 192.168.29.170 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
 Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
  GET / 200 in 192ms (compile: 106ms, render: 86ms)
+⨯ ./src/app/page.js:5:1
+Module not found: Can't resolve './components/CellularGraph'
+[0m [90m 3 |[39m [36mimport[39m { useState[33m,[39m useEffect[33m,[39m useRef } [36mfrom[39m [32m"react"[39m[33m;[39m
+ [90m 4 |[39m [36mimport[39m [33mGraphVisualizer[39m [36mfrom[39m [32m"./components/GraphVisualizer"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m [33mCellularGraph[39m [36mfrom[39m [32m"./components/CellularGraph"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 6 |[39m [36mimport[39m [33mChatPanel[39m [36mfrom[39m [32m"./components/ChatPanel"[39m[33m;[39m
+ [90m 7 |[39m [36mimport[39m [33mRepoRootNode[39m [36mfrom[39m [32m"./components/RepoRootNode"[39m[33m;[39m
+ [90m 8 |[39m [36mimport[39m [33mCodeDirectory[39m [36mfrom[39m [32m"./components/CodeDirectory"[39m[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/page.js [Client Component Browser]
+    ./src/app/page.js [Server Component]
+
+  Client Component SSR:
+    ./src/app/page.js [Client Component SSR]
+    ./src/app/page.js [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+⨯ ./src/app/page.js:5:1
+Module not found: Can't resolve './components/CellularGraph'
+[0m [90m 3 |[39m [36mimport[39m { useState[33m,[39m useEffect[33m,[39m useRef } [36mfrom[39m [32m"react"[39m[33m;[39m
+ [90m 4 |[39m [36mimport[39m [33mGraphVisualizer[39m [36mfrom[39m [32m"./components/GraphVisualizer"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m [33mCellularGraph[39m [36mfrom[39m [32m"./components/CellularGraph"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 6 |[39m [36mimport[39m [33mChatPanel[39m [36mfrom[39m [32m"./components/ChatPanel"[39m[33m;[39m
+ [90m 7 |[39m [36mimport[39m [33mRepoRootNode[39m [36mfrom[39m [32m"./components/RepoRootNode"[39m[33m;[39m
+ [90m 8 |[39m [36mimport[39m [33mCodeDirectory[39m [36mfrom[39m [32m"./components/CodeDirectory"[39m[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/page.js [Client Component Browser]
+    ./src/app/page.js [Server Component]
+
+  Client Component SSR:
+    ./src/app/page.js [Client Component SSR]
+    ./src/app/page.js [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+⨯ ./src/app/page.js:5:1
+Module not found: Can't resolve './components/CellularGraph'
+[0m [90m 3 |[39m [36mimport[39m { useState[33m,[39m useEffect[33m,[39m useRef } [36mfrom[39m [32m"react"[39m[33m;[39m
+ [90m 4 |[39m [36mimport[39m [33mGraphVisualizer[39m [36mfrom[39m [32m"./components/GraphVisualizer"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m [33mCellularGraph[39m [36mfrom[39m [32m"./components/CellularGraph"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 6 |[39m [36mimport[39m [33mChatPanel[39m [36mfrom[39m [32m"./components/ChatPanel"[39m[33m;[39m
+ [90m 7 |[39m [36mimport[39m [33mRepoRootNode[39m [36mfrom[39m [32m"./components/RepoRootNode"[39m[33m;[39m
+ [90m 8 |[39m [36mimport[39m [33mCodeDirectory[39m [36mfrom[39m [32m"./components/CodeDirectory"[39m[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/page.js [Client Component Browser]
+    ./src/app/page.js [Server Component]
+
+  Client Component SSR:
+    ./src/app/page.js [Client Component SSR]
+    ./src/app/page.js [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+⨯ ./src/app/page.js:5:1
+Module not found: Can't resolve './components/CellularGraph'
+[0m [90m 3 |[39m [36mimport[39m { useState[33m,[39m useEffect[33m,[39m useRef } [36mfrom[39m [32m"react"[39m[33m;[39m
+ [90m 4 |[39m [36mimport[39m [33mGraphVisualizer[39m [36mfrom[39m [32m"./components/GraphVisualizer"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m [33mCellularGraph[39m [36mfrom[39m [32m"./components/CellularGraph"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 6 |[39m [36mimport[39m [33mChatPanel[39m [36mfrom[39m [32m"./components/ChatPanel"[39m[33m;[39m
+ [90m 7 |[39m [36mimport[39m [33mRepoRootNode[39m [36mfrom[39m [32m"./components/RepoRootNode"[39m[33m;[39m
+ [90m 8 |[39m [36mimport[39m [33mCodeDirectory[39m [36mfrom[39m [32m"./components/CodeDirectory"[39m[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/page.js [Client Component Browser]
+    ./src/app/page.js [Server Component]
+
+  Client Component SSR:
+    ./src/app/page.js [Client Component SSR]
+    ./src/app/page.js [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+

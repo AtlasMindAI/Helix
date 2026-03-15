@@ -35,7 +35,7 @@ def generate_shadow_doc(entity_name: str) -> str:
         result = session.run("MATCH (n) WHERE n.name = $name RETURN n, labels(n)[0] AS type", name=entity_name).single()
         
     if not result:
-        return f"Entity {entity_name} not found in the organism."
+        return f"Entity {entity_name} not found in the system."
     
     node = result["n"]
     node_type = result["type"]
@@ -59,7 +59,7 @@ def generate_shadow_doc(entity_name: str) -> str:
         impact_count = "Unknown"
         
     prompt = f"""
-    Analyze this biological code entity: {entity_name}.
+    Analyze this system code entity: {entity_name}.
     We use a Cyber-Bio codebase metaphor.
 
     Structure: 
@@ -74,7 +74,7 @@ def generate_shadow_doc(entity_name: str) -> str:
     Avoid big titles. Use bolding for sections. Use extremely professional, precise language without marketing fluff.
     
     **Systemic Role**
-    What is its biological role in the app based on its name, docstring, and interactions? 
+    What is its system role in the app based on its name, docstring, and interactions? 
     
     **Metabolic Path**
     What data does it consume (upstream inputs/args) and what does it produce/trigger (downstream outputs/calls)?

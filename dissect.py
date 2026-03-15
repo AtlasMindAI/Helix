@@ -19,7 +19,7 @@ def _get_file_hash(path: str) -> str:
 
 def dissect(target_path: str, repo_url: str = ""):
     """
-    SOTA: Codebase as a Living Organism (Metabolic Mapping)
+    SOTA: Codebase as a Living Organism (Architectural Mapping)
     Research: "Biomimicry: A Super Systems Metaphor for Transforming Software Development"
     Validation: Implements the 'Metabolism' concept by treating repository updates as 
     homeostatic corrections, ensuring only deltas are processed to maintain system equilibrium.
@@ -91,7 +91,7 @@ def dissect(target_path: str, repo_url: str = ""):
         SOTA: Delta-Ingestion Efficiency
         Research: "Efficient Handling of Incremental Updates in Large-Scale Knowledge Graphs"
         Validation: Proves that stable nodes do not require re-analysis, drastically 
-        reducing the computational cost and LLM token usage during 'Mutation' cycles.
+        reducing the computational cost and LLM token usage during 'Patch' cycles.
         """
         print("✨ Organism is stable. No changes detected (Delta Ingestion Active).")
         

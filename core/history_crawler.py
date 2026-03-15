@@ -103,7 +103,7 @@ class EvolutionCrawler:
                             
                 previous_commit_hash = commit_hash
             
-        print("✅ Temporal Mapping Complete. The organism has a memory.")
+        print("✅ Temporal Mapping Complete. The system has a memory.")
 
 if __name__ == "__main__":
     crawler = EvolutionCrawler(".")

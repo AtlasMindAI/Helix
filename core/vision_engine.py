@@ -9,7 +9,7 @@ class VisionEngine:
     """
     SOTA: Multi-Modal Vision (Visual RAG)
     Research: "Visual-Link: Grounding Code Explanations in UI Pixels"
-    Validation: Captures the 'phenotype' (UI) of the organism to perform 
+    Validation: Captures the 'state' (UI) of the system to perform 
     visual regression analysis and UX diagnostic sanity checks.
     """
     def __init__(self, google_api_key: Optional[str] = None):

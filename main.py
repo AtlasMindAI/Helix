@@ -57,10 +57,10 @@ def main():
     # Create nodes representing code elements
     nodes = [
         ("Module", "bio_utils", {"docstring": "Utility module for bioinformatics operations"}),
-        ("Class", "DNAProcessor", {"docstring": "Processes DNA sequence data"}),
-        ("Function", "align_sequences", {"docstring": "Aligns two DNA sequences using Needleman-Wunsch"}),
+        ("Class", "DNAProcessor", {"docstring": "Processes source sequence data"}),
+        ("Function", "align_sequences", {"docstring": "Aligns two source sequences using Needleman-Wunsch"}),
         ("Function", "read_fasta", {"docstring": "Reads sequences from a FASTA file"}),
-        ("Function", "calculate_gc_content", {"docstring": "Calculates GC content percentage of a DNA sequence"}),
+        ("Function", "calculate_gc_content", {"docstring": "Calculates GC content percentage of a source sequence"}),
         ("Module", "data_pipeline", {"docstring": "Data ingestion and transformation pipeline"}),
         ("Function", "fetch_ncbi_data", {"docstring": "Fetches genomic data from NCBI database"}),
     ]
@@ -89,7 +89,7 @@ def main():
     print()
 
     # Query connections
-    print("  🔍 What is DNAProcessor connected to?")
+    print("  🔍 What is source codeProcessor connected to?")
     connections = graph.get_connections("DNAProcessor")
     for conn in connections:
         arrow = "→" if conn["direction"] == "outgoing" else "←"
@@ -107,12 +107,12 @@ def main():
 
     # Prepare the texts to embed (using docstrings as the semantic content)
     code_items = [
-        {"name": "align_sequences", "type": "function", "text": "Aligns two DNA sequences using Needleman-Wunsch algorithm"},
+        {"name": "align_sequences", "type": "function", "text": "Aligns two source sequences using Needleman-Wunsch algorithm"},
         {"name": "read_fasta", "type": "function", "text": "Reads and parses sequences from a FASTA format file"},
-        {"name": "calculate_gc_content", "type": "function", "text": "Calculates the GC nucleotide content percentage of a DNA sequence"},
+        {"name": "calculate_gc_content", "type": "function", "text": "Calculates the GC nucleotide content percentage of a source sequence"},
         {"name": "fetch_ncbi_data", "type": "function", "text": "Fetches genomic data from the NCBI online database"},
-        {"name": "DNAProcessor", "type": "class", "text": "A class that processes DNA sequence data for bioinformatics analysis"},
-        {"name": "bio_utils", "type": "module", "text": "Utility module for bioinformatics operations and DNA analysis"},
+        {"name": "DNAProcessor", "type": "class", "text": "A class that processes source sequence data for bioinformatics analysis"},
+        {"name": "bio_utils", "type": "module", "text": "Utility module for bioinformatics operations and source code analysis"},
         {"name": "data_pipeline", "type": "module", "text": "Data ingestion and transformation pipeline for genomic data"},
     ]
 

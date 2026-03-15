@@ -40,7 +40,7 @@ const LINK_COLORS = {
     EXTENDS: "#ffcc00",
     HAS_METHOD: "#00ffcc",
     EVOLVED_INTO: "#00ffcc",
-    MUTATED_IN: "#a200ff" // Mutation link
+    MUTATED_IN: "#a200ff" // Patch link
 };
 function GraphVisualizer({ graphData, onNodeClick, focusedNode, currentTimestamp, seedMode = false, transitioning = false }) {
     _s();
@@ -157,7 +157,7 @@ function GraphVisualizer({ graphData, onNodeClick, focusedNode, currentTimestamp
                     /**
              * SOTA: Community Detection Validation
              * Research: "A Unified Framework for Community Detection Using Quasi-Attention on Attributed Heterogeneous Graphs"
-             * Impact: Maps topological properties to functional organelles (modules/classes).
+             * Impact: Maps topological properties to functional components (modules/classes).
              */ const baseRadius = node.type === 'Commit' ? 4 : node.type === 'Module' ? 8 : node.type === 'Class' ? 5 : 3;
                     node.radius = baseRadius + degreeMultiplier * 1.5 + authorityLevel * 12;
                     if (seedMode && node.id === "seed") {
@@ -768,12 +768,12 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
 }),
-"[project]/src/app/components/CellularGraph.js [app-client] (ecmascript)", ((__turbopack_context__) => {
+"[project]/src/app/components/HierarchicalGraph.js [app-client] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
 __turbopack_context__.s([
     "default",
-    ()=>CellularGraph
+    ()=>HierarchicalGraph
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
@@ -801,7 +801,7 @@ const TYPE_FILLS = {
     Class: "rgba(153, 69, 255, 0.10)",
     Function: "rgba(0, 255, 136, 0.15)"
 };
-function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
+function HierarchicalGraph({ data, onNodeClick, highlightNodes = [] }) {
     _s();
     const containerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])();
     const svgRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])();
@@ -818,9 +818,9 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
     });
     // Track dimensions
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "CellularGraph.useEffect": ()=>{
+        "HierarchicalGraph.useEffect": ()=>{
             const update = {
-                "CellularGraph.useEffect.update": ()=>{
+                "HierarchicalGraph.useEffect.update": ()=>{
                     if (containerRef.current) {
                         const rect = containerRef.current.getBoundingClientRect();
                         setDimensions({
@@ -834,16 +834,16 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
                         });
                     }
                 }
-            }["CellularGraph.useEffect.update"];
+            }["HierarchicalGraph.useEffect.update"];
             update();
             window.addEventListener("resize", update);
             return ({
-                "CellularGraph.useEffect": ()=>window.removeEventListener("resize", update)
-            })["CellularGraph.useEffect"];
+                "HierarchicalGraph.useEffect": ()=>window.removeEventListener("resize", update)
+            })["HierarchicalGraph.useEffect"];
         }
-    }["CellularGraph.useEffect"], []);
+    }["HierarchicalGraph.useEffect"], []);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "CellularGraph.useEffect": ()=>{
+        "HierarchicalGraph.useEffect": ()=>{
             if (!data || !dimensions.width || !dimensions.height) return;
             const { width, height } = dimensions;
             const size = Math.min(width, height);
@@ -851,34 +851,34 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
             __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$d3$2d$selection$2f$src$2f$select$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__select$3e$__["select"](svgRef.current).selectAll("*").remove();
             // 1. Create the D3 Hierarchy
             const root = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$d3$2d$hierarchy$2f$src$2f$hierarchy$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__hierarchy$3e$__["hierarchy"](data).sum({
-                "CellularGraph.useEffect.root": (d)=>d.value || 0
-            }["CellularGraph.useEffect.root"]).sort({
-                "CellularGraph.useEffect.root": (a, b)=>(b.value || 0) - (a.value || 0)
-            }["CellularGraph.useEffect.root"]);
+                "HierarchicalGraph.useEffect.root": (d)=>d.value || 0
+            }["HierarchicalGraph.useEffect.root"]).sort({
+                "HierarchicalGraph.useEffect.root": (a, b)=>(b.value || 0) - (a.value || 0)
+            }["HierarchicalGraph.useEffect.root"]);
             // Ensure all non-leaf nodes have at least the sum of children
             root.each({
-                "CellularGraph.useEffect": (d)=>{
+                "HierarchicalGraph.useEffect": (d)=>{
                     if (!d.children && !d.data.value) {
                         d.data.value = 1;
                     }
                 }
-            }["CellularGraph.useEffect"]);
+            }["HierarchicalGraph.useEffect"]);
             root.sum({
-                "CellularGraph.useEffect": (d)=>d.value || (d.children ? 0 : 1)
-            }["CellularGraph.useEffect"]);
+                "HierarchicalGraph.useEffect": (d)=>d.value || (d.children ? 0 : 1)
+            }["HierarchicalGraph.useEffect"]);
             // 2. Setup the Circle Pack Layout
             const pack = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$d3$2d$hierarchy$2f$src$2f$pack$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__pack$3e$__["pack"]().size([
                 size - 4,
                 size - 4
             ]).padding({
-                "CellularGraph.useEffect.pack": (d)=>d.depth === 0 ? 20 : d.depth === 1 ? 10 : 4
-            }["CellularGraph.useEffect.pack"]);
+                "HierarchicalGraph.useEffect.pack": (d)=>d.depth === 0 ? 20 : d.depth === 1 ? 10 : 4
+            }["HierarchicalGraph.useEffect.pack"]);
             const packedRoot = pack(root);
             const nodes = packedRoot.descendants();
             // Highlight set for fast lookup
             const highlightSet = new Set(highlightNodes.map({
-                "CellularGraph.useEffect": (n)=>n.toLowerCase()
-            }["CellularGraph.useEffect"]));
+                "HierarchicalGraph.useEffect": (n)=>n.toLowerCase()
+            }["HierarchicalGraph.useEffect"]));
             // 3. Create SVG with zoom
             const svg = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$d3$2d$selection$2f$src$2f$select$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__select$3e$__["select"](svgRef.current).attr("width", width).attr("height", height).attr("viewBox", `0 0 ${size} ${size}`).style("background", "transparent").style("cursor", "grab");
             const g = svg.append("g").attr("transform", `translate(2, 2)`);
@@ -887,46 +887,46 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
                 0.5,
                 8
             ]).on("zoom", {
-                "CellularGraph.useEffect.zoom": (event)=>{
+                "HierarchicalGraph.useEffect.zoom": (event)=>{
                     g.attr("transform", event.transform);
                 }
-            }["CellularGraph.useEffect.zoom"]);
+            }["HierarchicalGraph.useEffect.zoom"]);
             svg.call(zoom);
             // 4. Render circles
             const circles = g.selectAll("circle").data(nodes).join("circle").attr("cx", {
-                "CellularGraph.useEffect.circles": (d)=>d.x
-            }["CellularGraph.useEffect.circles"]).attr("cy", {
-                "CellularGraph.useEffect.circles": (d)=>d.y
-            }["CellularGraph.useEffect.circles"]).attr("r", 0) // Start at 0 for animation
+                "HierarchicalGraph.useEffect.circles": (d)=>d.x
+            }["HierarchicalGraph.useEffect.circles"]).attr("cy", {
+                "HierarchicalGraph.useEffect.circles": (d)=>d.y
+            }["HierarchicalGraph.useEffect.circles"]).attr("r", 0) // Start at 0 for animation
             .attr("fill", {
-                "CellularGraph.useEffect.circles": (d)=>TYPE_FILLS[d.data.type] || "rgba(100,100,100,0.1)"
-            }["CellularGraph.useEffect.circles"]).attr("stroke", {
-                "CellularGraph.useEffect.circles": (d)=>{
+                "HierarchicalGraph.useEffect.circles": (d)=>TYPE_FILLS[d.data.type] || "rgba(100,100,100,0.1)"
+            }["HierarchicalGraph.useEffect.circles"]).attr("stroke", {
+                "HierarchicalGraph.useEffect.circles": (d)=>{
                     const isHighlighted = highlightSet.has((d.data.name || "").toLowerCase());
                     if (isHighlighted) return "#00e5ff";
                     return TYPE_COLORS[d.data.type] || "#334155";
                 }
-            }["CellularGraph.useEffect.circles"]).attr("stroke-width", {
-                "CellularGraph.useEffect.circles": (d)=>{
+            }["HierarchicalGraph.useEffect.circles"]).attr("stroke-width", {
+                "HierarchicalGraph.useEffect.circles": (d)=>{
                     const isHighlighted = highlightSet.has((d.data.name || "").toLowerCase());
                     if (isHighlighted) return 3;
                     return d.depth === 0 ? 1 : d.depth === 1 ? 1.5 : 0.8;
                 }
-            }["CellularGraph.useEffect.circles"]).attr("stroke-opacity", {
-                "CellularGraph.useEffect.circles": (d)=>{
+            }["HierarchicalGraph.useEffect.circles"]).attr("stroke-opacity", {
+                "HierarchicalGraph.useEffect.circles": (d)=>{
                     const isHighlighted = highlightSet.has((d.data.name || "").toLowerCase());
                     return isHighlighted ? 1 : 0.5;
                 }
-            }["CellularGraph.useEffect.circles"]).style("filter", {
-                "CellularGraph.useEffect.circles": (d)=>{
+            }["HierarchicalGraph.useEffect.circles"]).style("filter", {
+                "HierarchicalGraph.useEffect.circles": (d)=>{
                     const isHighlighted = highlightSet.has((d.data.name || "").toLowerCase());
                     if (isHighlighted) return "drop-shadow(0 0 12px rgba(0, 229, 255, 0.8))";
                     return d.depth <= 1 ? "drop-shadow(0 0 4px rgba(0, 229, 255, 0.1))" : "none";
                 }
-            }["CellularGraph.useEffect.circles"]).style("cursor", {
-                "CellularGraph.useEffect.circles": (d)=>d.depth > 0 ? "pointer" : "default"
-            }["CellularGraph.useEffect.circles"]).on("mouseenter", {
-                "CellularGraph.useEffect.circles": function(event, d) {
+            }["HierarchicalGraph.useEffect.circles"]).style("cursor", {
+                "HierarchicalGraph.useEffect.circles": (d)=>d.depth > 0 ? "pointer" : "default"
+            }["HierarchicalGraph.useEffect.circles"]).on("mouseenter", {
+                "HierarchicalGraph.useEffect.circles": function(event, d) {
                     if (d.depth === 0) return;
                     // Highlight the specific node visually in D3
                     __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$d3$2d$selection$2f$src$2f$select$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__select$3e$__["select"](this).transition().duration(200).attr("stroke-opacity", 1).attr("stroke-width", d.depth === 1 ? 2.5 : 2).style("filter", `drop-shadow(0 0 10px ${TYPE_COLORS[d.data.type]}66)`);
@@ -941,8 +941,8 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
                         }
                     });
                 }
-            }["CellularGraph.useEffect.circles"]).on("mousemove", {
-                "CellularGraph.useEffect.circles": function(event) {
+            }["HierarchicalGraph.useEffect.circles"]).on("mousemove", {
+                "HierarchicalGraph.useEffect.circles": function(event) {
                     // Determine screen position to keep tooltip within bounds
                     let tipX = event.pageX + 15;
                     let tipY = event.pageY + 15;
@@ -950,15 +950,15 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
                     if (tipX + 320 > window.innerWidth) tipX = event.pageX - 335;
                     if (tipY + 200 > window.innerHeight) tipY = window.innerHeight - 210;
                     setTooltip({
-                        "CellularGraph.useEffect.circles": (prev)=>({
+                        "HierarchicalGraph.useEffect.circles": (prev)=>({
                                 ...prev,
                                 x: tipX,
                                 y: tipY
                             })
-                    }["CellularGraph.useEffect.circles"]);
+                    }["HierarchicalGraph.useEffect.circles"]);
                 }
-            }["CellularGraph.useEffect.circles"]).on("mouseleave", {
-                "CellularGraph.useEffect.circles": function(event, d) {
+            }["HierarchicalGraph.useEffect.circles"]).on("mouseleave", {
+                "HierarchicalGraph.useEffect.circles": function(event, d) {
                     if (d.depth === 0) return;
                     const isHighlighted = highlightSet.has((d.data.name || "").toLowerCase());
                     // Revert aesthetics
@@ -971,8 +971,8 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
                         content: null
                     });
                 }
-            }["CellularGraph.useEffect.circles"]).on("click", {
-                "CellularGraph.useEffect.circles": function(event, d) {
+            }["HierarchicalGraph.useEffect.circles"]).on("click", {
+                "HierarchicalGraph.useEffect.circles": function(event, d) {
                     if (d.depth === 0) return;
                     event.stopPropagation();
                     // Flash animation
@@ -990,39 +990,39 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
                         });
                     }
                 }
-            }["CellularGraph.useEffect.circles"]);
+            }["HierarchicalGraph.useEffect.circles"]);
             // Animate circles in with staggered delay
             circles.transition().duration(800).delay({
-                "CellularGraph.useEffect": (d, i)=>d.depth * 200 + i * 2
-            }["CellularGraph.useEffect"]).attr("r", {
-                "CellularGraph.useEffect": (d)=>d.r
-            }["CellularGraph.useEffect"]).ease(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$d3$2d$ease$2f$src$2f$elastic$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__elasticOut__as__easeElasticOut$3e$__["easeElasticOut"].amplitude(1).period(0.5));
+                "HierarchicalGraph.useEffect": (d, i)=>d.depth * 200 + i * 2
+            }["HierarchicalGraph.useEffect"]).attr("r", {
+                "HierarchicalGraph.useEffect": (d)=>d.r
+            }["HierarchicalGraph.useEffect"]).ease(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$d3$2d$ease$2f$src$2f$elastic$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__elasticOut__as__easeElasticOut$3e$__["easeElasticOut"].amplitude(1).period(0.5));
             // 5. Labels
             g.selectAll("text").data(nodes.filter({
-                "CellularGraph.useEffect": (d)=>d.depth > 0 && d.r > 20
-            }["CellularGraph.useEffect"])).join("text").attr("x", {
-                "CellularGraph.useEffect": (d)=>d.x
-            }["CellularGraph.useEffect"]).attr("y", {
-                "CellularGraph.useEffect": (d)=>d.y
-            }["CellularGraph.useEffect"]).attr("text-anchor", "middle").attr("dominant-baseline", "central").attr("fill", {
-                "CellularGraph.useEffect": (d)=>TYPE_COLORS[d.data.type] || "#e8ecf5"
-            }["CellularGraph.useEffect"]).attr("font-size", {
-                "CellularGraph.useEffect": (d)=>Math.min(d.r / 3.5, 14)
-            }["CellularGraph.useEffect"]).attr("font-family", "'Inter', 'Segoe UI', monospace").attr("font-weight", {
-                "CellularGraph.useEffect": (d)=>d.depth === 1 ? 700 : 500
-            }["CellularGraph.useEffect"]).attr("letter-spacing", "0.03em").attr("opacity", 0).attr("pointer-events", "none").text({
-                "CellularGraph.useEffect": (d)=>{
+                "HierarchicalGraph.useEffect": (d)=>d.depth > 0 && d.r > 20
+            }["HierarchicalGraph.useEffect"])).join("text").attr("x", {
+                "HierarchicalGraph.useEffect": (d)=>d.x
+            }["HierarchicalGraph.useEffect"]).attr("y", {
+                "HierarchicalGraph.useEffect": (d)=>d.y
+            }["HierarchicalGraph.useEffect"]).attr("text-anchor", "middle").attr("dominant-baseline", "central").attr("fill", {
+                "HierarchicalGraph.useEffect": (d)=>TYPE_COLORS[d.data.type] || "#e8ecf5"
+            }["HierarchicalGraph.useEffect"]).attr("font-size", {
+                "HierarchicalGraph.useEffect": (d)=>Math.min(d.r / 3.5, 14)
+            }["HierarchicalGraph.useEffect"]).attr("font-family", "'Inter', 'Segoe UI', monospace").attr("font-weight", {
+                "HierarchicalGraph.useEffect": (d)=>d.depth === 1 ? 700 : 500
+            }["HierarchicalGraph.useEffect"]).attr("letter-spacing", "0.03em").attr("opacity", 0).attr("pointer-events", "none").text({
+                "HierarchicalGraph.useEffect": (d)=>{
                     const maxLen = Math.floor(d.r / 4);
                     const name = d.data.name || "";
                     return name.length > maxLen ? name.substring(0, maxLen) + "…" : name;
                 }
-            }["CellularGraph.useEffect"]).transition().duration(600).delay({
-                "CellularGraph.useEffect": (d, i)=>d.depth * 200 + 400 + i * 5
-            }["CellularGraph.useEffect"]).attr("opacity", {
-                "CellularGraph.useEffect": (d)=>d.depth === 1 ? 0.9 : 0.7
-            }["CellularGraph.useEffect"]);
+            }["HierarchicalGraph.useEffect"]).transition().duration(600).delay({
+                "HierarchicalGraph.useEffect": (d, i)=>d.depth * 200 + 400 + i * 5
+            }["HierarchicalGraph.useEffect"]).attr("opacity", {
+                "HierarchicalGraph.useEffect": (d)=>d.depth === 1 ? 0.9 : 0.7
+            }["HierarchicalGraph.useEffect"]);
         }
-    }["CellularGraph.useEffect"], [
+    }["HierarchicalGraph.useEffect"], [
         data,
         dimensions,
         highlightNodes,
@@ -1039,7 +1039,7 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
                 ref: svgRef,
                 className: "w-full h-full"
             }, void 0, false, {
-                fileName: "[project]/src/app/components/CellularGraph.js",
+                fileName: "[project]/src/app/components/HierarchicalGraph.js",
                 lineNumber: 240,
                 columnNumber: 13
             }, this),
@@ -1069,7 +1069,7 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
                             "]"
                         ]
                     }, void 0, true, {
-                        fileName: "[project]/src/app/components/CellularGraph.js",
+                        fileName: "[project]/src/app/components/HierarchicalGraph.js",
                         lineNumber: 259,
                         columnNumber: 21
                     }, this),
@@ -1077,7 +1077,7 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
                         className: "text-[0.85rem] font-semibold text-[#e8ecf5] font-mono break-all mb-2",
                         children: tooltip.content.name
                     }, void 0, false, {
-                        fileName: "[project]/src/app/components/CellularGraph.js",
+                        fileName: "[project]/src/app/components/HierarchicalGraph.js",
                         lineNumber: 262,
                         columnNumber: 21
                     }, this),
@@ -1089,14 +1089,14 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
                             tooltip.content.type === "Module" ? "classes/functions" : "methods"
                         ]
                     }, void 0, true, {
-                        fileName: "[project]/src/app/components/CellularGraph.js",
+                        fileName: "[project]/src/app/components/HierarchicalGraph.js",
                         lineNumber: 267,
                         columnNumber: 25
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("hr", {
                         className: "my-2 border-[rgba(0,229,255,0.1)]"
                     }, void 0, false, {
-                        fileName: "[project]/src/app/components/CellularGraph.js",
+                        fileName: "[project]/src/app/components/HierarchicalGraph.js",
                         lineNumber: 272,
                         columnNumber: 21
                     }, this),
@@ -1109,19 +1109,19 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
                                     className: "text-[#00e5ff] font-semibold",
                                     children: "Clinical Data:"
                                 }, void 0, false, {
-                                    fileName: "[project]/src/app/components/CellularGraph.js",
+                                    fileName: "[project]/src/app/components/HierarchicalGraph.js",
                                     lineNumber: 278,
                                     columnNumber: 33
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
-                                    fileName: "[project]/src/app/components/CellularGraph.js",
+                                    fileName: "[project]/src/app/components/HierarchicalGraph.js",
                                     lineNumber: 278,
                                     columnNumber: 101
                                 }, this),
                                 tooltip.content.shadow_doc
                             ]
                         }, void 0, true, {
-                            fileName: "[project]/src/app/components/CellularGraph.js",
+                            fileName: "[project]/src/app/components/HierarchicalGraph.js",
                             lineNumber: 277,
                             columnNumber: 29
                         }, this) : tooltip.content.docstring ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1131,51 +1131,51 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
                                     className: "text-[#00ff88] font-semibold",
                                     children: "Raw Docstring:"
                                 }, void 0, false, {
-                                    fileName: "[project]/src/app/components/CellularGraph.js",
+                                    fileName: "[project]/src/app/components/HierarchicalGraph.js",
                                     lineNumber: 283,
                                     columnNumber: 33
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
-                                    fileName: "[project]/src/app/components/CellularGraph.js",
+                                    fileName: "[project]/src/app/components/HierarchicalGraph.js",
                                     lineNumber: 283,
                                     columnNumber: 101
                                 }, this),
                                 tooltip.content.docstring
                             ]
                         }, void 0, true, {
-                            fileName: "[project]/src/app/components/CellularGraph.js",
+                            fileName: "[project]/src/app/components/HierarchicalGraph.js",
                             lineNumber: 282,
                             columnNumber: 29
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "italic text-[#4a5568]",
                             children: "No documentation found. Click to generate Shadow Doc in panel."
                         }, void 0, false, {
-                            fileName: "[project]/src/app/components/CellularGraph.js",
+                            fileName: "[project]/src/app/components/HierarchicalGraph.js",
                             lineNumber: 287,
                             columnNumber: 29
                         }, this)
                     }, void 0, false, {
-                        fileName: "[project]/src/app/components/CellularGraph.js",
+                        fileName: "[project]/src/app/components/HierarchicalGraph.js",
                         lineNumber: 274,
                         columnNumber: 21
                     }, this)
                 ]
             }, void 0, true, {
-                fileName: "[project]/src/app/components/CellularGraph.js",
+                fileName: "[project]/src/app/components/HierarchicalGraph.js",
                 lineNumber: 244,
                 columnNumber: 17
             }, this)
         ]
     }, void 0, true, {
-        fileName: "[project]/src/app/components/CellularGraph.js",
+        fileName: "[project]/src/app/components/HierarchicalGraph.js",
         lineNumber: 239,
         columnNumber: 9
     }, this);
 }
-_s(CellularGraph, "ya1Q5W6PDHfGqKFhsd8A/wExFH4=");
-_c = CellularGraph;
+_s(HierarchicalGraph, "ya1Q5W6PDHfGqKFhsd8A/wExFH4=");
+_c = HierarchicalGraph;
 var _c;
-__turbopack_context__.k.register(_c, "CellularGraph");
+__turbopack_context__.k.register(_c, "HierarchicalGraph");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
@@ -1726,7 +1726,7 @@ function CodeDirectory({ onNodeSelect }) {
         if (type === "Function") return "text-neon-emerald";
         return "text-secondary";
     };
-    const getMetabolicStyle = (node)=>{
+    const getArchitecturalStyle = (node)=>{
         if (!node.pagerank) return {};
         const intensity = Math.min(8, node.pagerank * 15);
         return {
@@ -1745,7 +1745,7 @@ function CodeDirectory({ onNodeSelect }) {
                     className: `flex items-center hover:bg-elevated cursor-pointer py-1.5 px-2 rounded-md transition-all group ${depth === 0 ? "mt-1" : ""} ${isHighAuthority ? "border-l-2 border-neon-cyan/30" : ""}`,
                     style: {
                         paddingLeft: `${depth * 16 + 8}px`,
-                        ...getMetabolicStyle(node)
+                        ...getArchitecturalStyle(node)
                     },
                     onClick: ()=>onNodeSelect(node),
                     children: [
@@ -2052,7 +2052,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$GraphVisualizer$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/GraphVisualizer.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CellularGraph$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/CellularGraph.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$HierarchicalGraph$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/HierarchicalGraph.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ChatPanel$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/ChatPanel.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$RepoRootNode$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/RepoRootNode.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CodeDirectory$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/CodeDirectory.js [app-client] (ecmascript)");
@@ -2082,11 +2082,11 @@ function Home() {
     const [searchResults, setSearchResults] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
-    const [viewMode, setViewMode] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("graph"); // "graph" | "cellular" | "directory"
+    const [viewMode, setViewMode] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("graph"); // "graph" | "hierarchical" | "directory"
     const [graphMode, setGraphMode] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("macro"); // "macro" | "deep"
     const [umlCode, setUmlCode] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [generatingUml, setGeneratingUml] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [cellularData, setCellularData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [hierarchicalData, setHierarchicalData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [highlightNodes, setHighlightNodes] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [interrogating, setInterrogating] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [currentTimestamp, setCurrentTimestamp] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(Date.now() / 1000);
@@ -2095,7 +2095,7 @@ function Home() {
         max: Date.now() / 1000
     });
     const [swarmLogs, setSwarmLogs] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
-    const [crisprProposal, setCrisprProposal] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [autoFixProposal, setAutoFixProposal] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [swarmActive, setSwarmActive] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [swarmConnected, setSwarmConnected] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [autoEvolve, setAutoEvolve] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
@@ -2161,9 +2161,9 @@ function Home() {
             });
         }
     };
-    // Fetch cellular data
-    const fetchCellularData = ()=>{
-        fetch(`${API_URL}/api/v1/graph/cellular`).then((r)=>r.json()).then((data)=>setCellularData(data)).catch((e)=>console.error("Failed to fetch cellular data", e));
+    // Fetch hierarchical data
+    const fetchHierarchicalData = ()=>{
+        fetch(`${API_URL}/api/v1/graph/hierarchical`).then((r)=>r.json()).then((data)=>setHierarchicalData(data)).catch((e)=>console.error("Failed to fetch hierarchical data", e));
     };
     const fetchNodeHistory = (filePath)=>{
         if (!filePath) return;
@@ -2238,7 +2238,7 @@ function Home() {
         "Home.useEffect": ()=>{
             const selectionName = selectedNode?.name || null;
             const selectionChanged = selectionName !== lastSelectionRef.current;
-            const swarmSignal = swarmActive || Boolean(crisprProposal);
+            const swarmSignal = swarmActive || Boolean(autoFixProposal);
             if (selectionChanged || swarmSignal) {
                 setAnalysisDismissed(false);
             }
@@ -2252,17 +2252,17 @@ function Home() {
     }["Home.useEffect"], [
         selectedNode,
         swarmActive,
-        crisprProposal,
+        autoFixProposal,
         analysisDismissed
     ]);
     const connectSwarmSocket = ()=>{
-        const wsUrl = API_URL.replace("http", "ws") + "/ws/immune_swarm";
+        const wsUrl = API_URL.replace("http", "ws") + "/ws/agent_swarm";
         if (socketRef.current?.readyState === WebSocket.OPEN || socketRef.current?.readyState === WebSocket.CONNECTING) {
             return;
         }
         const socket = new WebSocket(wsUrl);
         socket.onopen = ()=>{
-            console.log("Connected to Immune Swarm WebSocket");
+            console.log("Connected to Agent Swarm WebSocket");
             setSwarmConnected(true);
             setSwarmLogs((prev)=>[
                     ...prev,
@@ -2283,15 +2283,15 @@ function Home() {
                         ...prev,
                         data.message
                     ].slice(-50)); // Keep last 50 logs
-            } else if (data.type === "CRISPR_PROPOSAL") {
+            } else if (data.type === "AutoFix_PROPOSAL") {
                 if (autoEvolveRef.current) {
                     setSwarmLogs((prev)=>[
                             ...prev,
-                            "⚡ Auto-Evolve override: applying mutation..."
+                            "⚡ Auto-Evolve override: applying patch..."
                         ].slice(-50));
-                    acceptMutation(data);
+                    acceptPatch(data);
                 } else {
-                    setCrisprProposal(data);
+                    setAutoFixProposal(data);
                 }
                 setSwarmActive(false);
             } else if (data.type === "SHADOW_VERIFY") {
@@ -2307,7 +2307,7 @@ function Home() {
             }
         };
         socket.onclose = ()=>{
-            console.log("Disconnected from Immune Swarm WebSocket");
+            console.log("Disconnected from Agent Swarm WebSocket");
             setSwarmConnected(false);
             setSwarmLogs((prev)=>[
                     ...prev,
@@ -2331,7 +2331,7 @@ function Home() {
         "Home.useEffect": ()=>{
             connectSwarmSocket();
             fetchGraphData(graphMode);
-            fetchCellularData();
+            fetchHierarchicalData();
             return ({
                 "Home.useEffect": ()=>{
                     if (reconnectTimerRef.current) {
@@ -2372,12 +2372,12 @@ function Home() {
             setFileContent("");
         }
     };
-    // Interrogation (agent-powered search for cellular view)
+    // Interrogation (agent-powered search for hierarchical view)
     const deploySwarm = ()=>{
         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
             setSwarmActive(true);
             setSwarmLogs([]);
-            setCrisprProposal(null);
+            setAutoFixProposal(null);
             socketRef.current.send(JSON.stringify({
                 command: "DEPLOY_SWARM"
             }));
@@ -2400,10 +2400,10 @@ flowchart TD
   C --> D[Neural Link: Ask Questions]
   C --> E[Select Node → Analysis]
   E --> F[Shadow Doc / UML]
-  C --> G[Deploy Immune Swarm]
+  C --> G[Deploy Agent Swarm]
   G --> H[Review Proposal]
   H --> I{Auto-Evolve?}
-  I -->|Yes| J[Apply Mutation]
+  I -->|Yes| J[Apply Patch]
   I -->|No| K[Accept / Reject]
   J --> L[Re-index & Observe]
   K --> L
@@ -2424,22 +2424,22 @@ flowchart TD
         }
         setOnboarded(true);
     };
-    const verifyMutation = async ()=>{
-        if (!crisprProposal) return;
+    const verifyPatch = async ()=>{
+        if (!autoFixProposal) return;
         setSwarmLogs((prev)=>[
                 ...prev,
-                `🛡️ Sandbox: Initiating isolated staging for ${crisprProposal.node}...`
+                `🛡️ Sandbox: Initiating isolated staging for ${autoFixProposal.node}...`
             ]);
         try {
-            const res = await fetch(`${API_URL}/api/verify_mutation`, {
+            const res = await fetch(`${API_URL}/api/verify_patch`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    node: crisprProposal.node,
-                    proposal: crisprProposal.proposal,
-                    file_path: crisprProposal.file_path
+                    node: autoFixProposal.node,
+                    proposal: autoFixProposal.proposal,
+                    file_path: autoFixProposal.file_path
                 })
             });
             const data = await res.json();
@@ -2473,7 +2473,7 @@ flowchart TD
             if (data.status === "success") {
                 setSwarmLogs((prev)=>[
                         ...prev,
-                        "🧬 Vision: Snapshot secured. Sequencing visual DNA..."
+                        "🧬 Vision: Snapshot secured. Sequencing visual source code..."
                     ].slice(-50));
                 // 2. Analyze Vision
                 return fetch(`${API_URL}/api/vision/analyze?path=${encodeURIComponent(data.path)}`);
@@ -2496,16 +2496,16 @@ flowchart TD
                 ].slice(-50));
         });
     };
-    const acceptMutation = async (proposalOverride)=>{
-        const proposal = proposalOverride || crisprProposal;
+    const acceptPatch = async (proposalOverride)=>{
+        const proposal = proposalOverride || autoFixProposal;
         if (!proposal) return;
         setSwarmLogs((prev)=>[
                 ...prev,
-                "🧬 CRISPR: Mutation starting..."
+                "🧬 AutoFix: Patch starting..."
             ]);
-        // Phase 3: CRISPR Implementation will go here
+        // Phase 3: AutoFix Implementation will go here
         try {
-            const res = await fetch(`${API_URL}/api/accept_mutation`, {
+            const res = await fetch(`${API_URL}/api/accept_patch`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -2520,20 +2520,20 @@ flowchart TD
             if (data.success) {
                 setSwarmLogs((prev)=>[
                         ...prev,
-                        "✅ Mutation Physical: Code successfully re-spliced."
+                        "✅ Patch Physical: Code successfully re-spliced."
                     ]);
-                setCrisprProposal(null);
+                setAutoFixProposal(null);
                 fetchGraphData();
             } else {
                 setSwarmLogs((prev)=>[
                         ...prev,
-                        `❌ Mutation Rejected: ${data.message || "Validation failed."}`
+                        `❌ Patch Rejected: ${data.message || "Validation failed."}`
                     ]);
             }
         } catch (err) {
             setSwarmLogs((prev)=>[
                     ...prev,
-                    "❌ Mutation Failed: Splicing error."
+                    "❌ Patch Failed: Splicing error."
                 ]);
         }
     };
@@ -2638,9 +2638,9 @@ flowchart TD
             setGeneratingUml(false);
         }
     };
-    // Semantic search (uses interrogation in cellular view)
+    // Semantic search (uses interrogation in hierarchical view)
     const handleSearch = async (e)=>{
-        if (viewMode === "cellular") {
+        if (viewMode === "hierarchical") {
             return handleInterrogate(e);
         }
         e.preventDefault();
@@ -2824,7 +2824,7 @@ flowchart TD
                             onClick: ()=>setShowCode((prev)=>!prev),
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    children: "DNA Source"
+                                    children: "source_code Source"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/page.js",
                                     lineNumber: 624,
@@ -2902,7 +2902,7 @@ flowchart TD
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                             className: "text-neon-cyan text-[10px] uppercase tracking-widest font-bold flex items-center gap-2",
-                            children: "🧬 DNA Evolution Sequence"
+                            children: "🧬 source code Evolution Sequence"
                         }, void 0, false, {
                             fileName: "[project]/src/app/page.js",
                             lineNumber: 643,
@@ -2958,7 +2958,7 @@ flowchart TD
                                     columnNumber: 17
                                 }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 className: "text-muted text-[10px] italic",
-                                children: "No historical mutations found."
+                                children: "No historical patchs found."
                             }, void 0, false, {
                                 fileName: "[project]/src/app/page.js",
                                 lineNumber: 659,
@@ -3088,7 +3088,7 @@ flowchart TD
         {
             id: "swarm",
             label: "Swarm",
-            description: "Deploy the Immune Swarm for analysis.",
+            description: "Deploy the Agent Swarm for analysis.",
             done: swarmLogs.length > 0 || swarmActive
         }
     ];
@@ -3111,10 +3111,10 @@ flowchart TD
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
                 className: "helix-stage",
                 children: [
-                    viewMode === "cellular" && cellularData && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    viewMode === "hierarchical" && hierarchicalData && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "absolute inset-0 animate-fade-in",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CellularGraph$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                            data: cellularData,
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$HierarchicalGraph$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                            data: hierarchicalData,
                             highlightNodes: highlightNodes,
                             onNodeClick: (node)=>{
                                 setSelectedNode(node);
@@ -3922,7 +3922,7 @@ flowchart TD
                                                     lineNumber: 1020,
                                                     columnNumber: 21
                                                 }, this),
-                                                "Immune Swarm Monologue"
+                                                "Agent Swarm Monologue"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/page.js",
@@ -4006,7 +4006,7 @@ flowchart TD
                 lineNumber: 951,
                 columnNumber: 9
             }, this),
-            crisprProposal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            autoFixProposal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] w-[500px] animate-slide-up",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "helix-panel p-6 border-2 border-neon-cyan",
@@ -4026,7 +4026,7 @@ flowchart TD
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                             className: "text-neon-emerald font-bold uppercase tracking-widest text-lg",
-                                            children: "CRISPR Mutation Proposal"
+                                            children: "Code Patch Proposal"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/page.js",
                                             lineNumber: 1048,
@@ -4036,7 +4036,7 @@ flowchart TD
                                             className: "text-[10px] text-secondary uppercase tracking-wider",
                                             children: [
                                                 "Target Entity: ",
-                                                crisprProposal.node
+                                                autoFixProposal.node
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/page.js",
@@ -4070,7 +4070,7 @@ flowchart TD
                                     className: "text-gray-400 text-xs mb-4 italic",
                                     children: [
                                         '"',
-                                        crisprProposal.vulnerability.substring(0, 200),
+                                        autoFixProposal.vulnerability.substring(0, 200),
                                         '..."'
                                     ]
                                 }, void 0, true, {
@@ -4080,7 +4080,7 @@ flowchart TD
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                     className: "text-neon-emerald text-[11px] font-bold uppercase mb-2",
-                                    children: "Recommended DNA Slice (Mutation):"
+                                    children: "Recommended source code Slice (Patch):"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/page.js",
                                     lineNumber: 1057,
@@ -4089,7 +4089,7 @@ flowchart TD
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("pre", {
                                     className: "text-[10px] font-mono text-gray-300 bg-black/40 p-3 rounded border border-white/5 overflow-x-auto",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("code", {
-                                        children: crisprProposal.proposal
+                                        children: autoFixProposal.proposal
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/page.js",
                                         lineNumber: 1059,
@@ -4110,7 +4110,7 @@ flowchart TD
                             className: "flex flex-col gap-3",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: verifyMutation,
+                                    onClick: verifyPatch,
                                     className: "w-full helix-button-secondary py-3 text-xs border-neon-purple text-neon-purple hover:bg-neon-purple/10",
                                     children: "🛡️ Verify in Sandbox (Shadow Staging)"
                                 }, void 0, false, {
@@ -4122,18 +4122,18 @@ flowchart TD
                                     className: "flex gap-4",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                            onClick: acceptMutation,
+                                            onClick: acceptPatch,
                                             className: "flex-1 helix-button-primary py-3 text-xs",
-                                            children: "Accept & Splicing DNA"
+                                            children: "Accept & Splicing source code"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/page.js",
                                             lineNumber: 1071,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                            onClick: ()=>setCrisprProposal(null),
+                                            onClick: ()=>setAutoFixProposal(null),
                                             className: "flex-1 helix-button-secondary py-3 text-xs",
-                                            children: "Reject Mutation"
+                                            children: "Reject Patch"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/page.js",
                                             lineNumber: 1077,
@@ -4213,10 +4213,10 @@ flowchart TD
                             className: `helix-dock-item helix-dock-item--primary ${swarmConnected ? "" : "helix-dock-item--offline"}`,
                             onClick: deploySwarm,
                             disabled: swarmActive,
-                            "aria-label": "Immune Swarm",
-                            "data-label": "Immune Swarm",
+                            "aria-label": "Agent Swarm",
+                            "data-label": "Agent Swarm",
                             "data-desc": swarmDockDesc,
-                            title: "Immune Swarm",
+                            title: "Agent Swarm",
                             children: "🧬"
                         }, void 0, false, {
                             fileName: "[project]/src/app/page.js",
@@ -4495,11 +4495,11 @@ flowchart TD
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                     onClick: ()=>{
-                                                        setViewMode("cellular");
+                                                        setViewMode("hierarchical");
                                                         setHighlightNodes([]);
                                                     },
-                                                    className: `flex-1 py-1.5 text-[9px] uppercase tracking-wider font-bold rounded transition-all ${viewMode === "cellular" ? "text-[#0d1117] bg-neon-purple shadow-[0_0_15px_rgba(153,69,255,0.3)]" : "text-secondary hover:text-white"}`,
-                                                    children: "Cellular"
+                                                    className: `flex-1 py-1.5 text-[9px] uppercase tracking-wider font-bold rounded transition-all ${viewMode === "hierarchical" ? "text-[#0d1117] bg-neon-purple shadow-[0_0_15px_rgba(153,69,255,0.3)]" : "text-secondary hover:text-white"}`,
+                                                    children: "Hierarchical"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/page.js",
                                                     lineNumber: 1217,
@@ -4711,7 +4711,7 @@ flowchart TD
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                                     type: "text",
                                                     className: "search-input pr-10",
-                                                    placeholder: viewMode === "cellular" ? "Type a question for the agent..." : "Search classes, functions, modules...",
+                                                    placeholder: viewMode === "hierarchical" ? "Type a question for the agent..." : "Search classes, functions, modules...",
                                                     value: searchQuery,
                                                     onChange: (e)=>setSearchQuery(e.target.value)
                                                 }, void 0, false, {
@@ -4754,7 +4754,7 @@ flowchart TD
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                     className: "text-[9px] text-secondary uppercase tracking-wider",
-                                                    children: "Zero-click mutations"
+                                                    children: "Zero-click patchs"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/page.js",
                                                     lineNumber: 1324,
@@ -4956,7 +4956,7 @@ flowchart TD
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                                    children: "Use Neural Link to ask questions or deploy the Immune Swarm."
+                                                    children: "Use Neural Link to ask questions or deploy the Agent Swarm."
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/page.js",
                                                     lineNumber: 1378,

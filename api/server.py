@@ -36,8 +36,8 @@ load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file_
 from core import Embedder, GraphMemory, VectorMemory
 from core.agent import query_agent
 from core.harvester import fetch_and_index_repo
-from core.immune_system import immune_swarm
-from core.mutation_engine import apply_mutation
+from core.agent_agent_system import agent_agent_system
+from core.refactor_engine import apply_patch
 from core.shadow_engine import generate_shadow_doc
 from core.sync_engine import run_helix_sync_sequence
 from core.sandbox_engine import SandboxEngine
@@ -62,7 +62,7 @@ class ChatRequest(BaseModel):
 class ShadowRequest(BaseModel):
     name: str
 
-class MutationRequest(BaseModel):
+class PatchRequest(BaseModel):
     node: str
     proposal: str
     file_path: str
@@ -93,7 +93,7 @@ def _int_env(name: str, default: int) -> int:
     except ValueError:
         return default
 
-# Swarm scheduling configuration
+# AgentSystem scheduling configuration
 SWARM_AUTONOMOUS_ENABLED = os.getenv("SWARM_AUTONOMOUS_ENABLED", "true").lower() in {
     "1",
     "true",
@@ -103,7 +103,7 @@ SWARM_AUTONOMOUS_ENABLED = os.getenv("SWARM_AUTONOMOUS_ENABLED", "true").lower()
 SWARM_AUTONOMOUS_INTERVAL_SECONDS = max(30, _int_env("SWARM_AUTONOMOUS_INTERVAL_SECONDS", 900))
 SWARM_AUTONOMOUS_INITIAL_DELAY_SECONDS = max(0, _int_env("SWARM_AUTONOMOUS_INITIAL_DELAY_SECONDS", 10))
 
-class SwarmConnectionManager:
+class AgentSystemConnectionManager:
     def __init__(self) -> None:
         self.active_connections: list[WebSocket] = []
 
@@ -125,20 +125,20 @@ class SwarmConnectionManager:
         for connection in stale:
             self.disconnect(connection)
 
-swarm_manager = SwarmConnectionManager()
-swarm_scheduler_task: asyncio.Task | None = None
-swarm_scheduler_stop = asyncio.Event()
-latest_crispr_proposal: dict | None = None
-swarm_is_running = False
+agent_system_manager = AgentSystemConnectionManager()
+agent_system_scheduler_task: asyncio.Task | None = None
+agent_system_scheduler_stop = asyncio.Event()
+latest_autoFix_proposal: dict | None = None
+agent_system_is_running = False
 
-# Metabolic Metrics
+# Architectural Metrics
 METABOLISM = {
     "proposed": 0,
     "accepted": 0,
     "loops_completed": 0
 }
 
-def build_swarm_state() -> dict:
+def build_agent_system_state() -> dict:
     return {
         "messages": [],
         "identified_node": "",
@@ -149,9 +149,9 @@ def build_swarm_state() -> dict:
         "logs": [],
     }
 
-def build_crispr_payload(state: dict) -> dict:
+def build_autoFix_payload(state: dict) -> dict:
     return {
-        "type": "CRISPR_PROPOSAL",
+        "type": "AutoFix_PROPOSAL",
         "node": state.get("identified_node", ""),
         "vulnerability": state.get("vulnerability", ""),
         "proposal": state.get("optimization_proposal", ""),
@@ -159,83 +159,83 @@ def build_crispr_payload(state: dict) -> dict:
         "original_code": state.get("code_content", ""),
     }
 
-async def run_swarm_autonomous() -> None:
-    global latest_crispr_proposal, swarm_is_running
+async def run_agent_system_autonomous() -> None:
+    global latest_autoFix_proposal, agent_system_is_running
     
-    if swarm_is_running:
+    if agent_system_is_running:
         return
     
-    swarm_is_running = True
+    agent_system_is_running = True
     
     if graph is None or not graph.verify_connection():
-        await swarm_manager.broadcast_json({
+        await agent_system_manager.broadcast_json({
             "type": "LOG",
             "message": "❌ Autonomous loop skipped: graph not connected.",
         })
-        swarm_is_running = False
+        agent_system_is_running = False
         return
 
-    await swarm_manager.broadcast_json({
+    await agent_system_manager.broadcast_json({
         "type": "LOG",
-        "message": "🤖 Autonomous loop: initiating immune swarm...",
+        "message": "🤖 Autonomous loop: initiating agent agent_system...",
     })
 
     try:
         """
-        SOTA: Asynchronous Swarming with Real-time Streaming
+        SOTA: Asynchronous AgentSysteming with Real-time Streaming
         Research: Mirroring OpenAI's "Aardvark" (Codex Security) and "RepairAgent" (ICSE 2025).
         Validation: Uses `astream` to provide immediate visibility into autonomous agent 
         loops, essential for the "System Vitals" transparency requirement.
         """
-        final_state = build_swarm_state()
+        final_state = build_agent_system_state()
         
-        async for output in immune_swarm.astream(final_state):
+        async for output in agent_agent_system.astream(final_state):
             for node_name, delta in output.items():
                 if "logs" in delta:
                     for log in delta["logs"]:
-                        await swarm_manager.broadcast_json({"type": "LOG", "message": log})
+                        await agent_system_manager.broadcast_json({"type": "LOG", "message": log})
                 
                 # Update final state with deltas
                 final_state.update(delta)
 
         if final_state.get("optimization_proposal"):
-            payload = build_crispr_payload(final_state)
-            latest_crispr_proposal = payload
+            payload = build_autoFix_payload(final_state)
+            latest_autoFix_proposal = payload
             METABOLISM["proposed"] += 1
-            await swarm_manager.broadcast_json(payload)
+            await agent_system_manager.broadcast_json(payload)
             
         METABOLISM["loops_completed"] += 1
         
     except Exception as exc:
-        print(f"ERROR in run_swarm_autonomous: {exc}")
-        await swarm_manager.broadcast_json({
+        print(f"ERROR in run_agent_system_autonomous: {exc}")
+        await agent_system_manager.broadcast_json({
             "type": "LOG",
-            "message": f"❌ Autonomous loop encountered a logic pathogen: {exc}",
+            "message": f"❌ Autonomous loop encountered a logic vulnerability: {exc}",
         })
     finally:
-        swarm_is_running = False
+        agent_system_is_running = False
 
-async def swarm_scheduler_loop() -> None:
+async def agent_system_scheduler_loop() -> None:
     await asyncio.sleep(SWARM_AUTONOMOUS_INITIAL_DELAY_SECONDS)
-    while not swarm_scheduler_stop.is_set():
+    while not agent_system_scheduler_stop.is_set():
         if SWARM_AUTONOMOUS_ENABLED:
             try:
-                await run_swarm_autonomous()
+                await run_agent_system_autonomous()
             except Exception as e:
                 print(f"CRITICAL ERROR in scheduler loop: {e}")
         
         try:
             await asyncio.wait_for(
-                swarm_scheduler_stop.wait(),
+                agent_system_scheduler_stop.wait(),
                 timeout=SWARM_AUTONOMOUS_INTERVAL_SECONDS,
             )
         except asyncio.TimeoutError:
             continue
 
-def start_swarm_scheduler() -> None:
-    global swarm_scheduler_task
-    if swarm_scheduler_task is None or swarm_scheduler_task.done():
-        swarm_scheduler_task = asyncio.create_task(swarm_scheduler_loop())
+def start_agent_system_scheduler() -> None:
+    global agent_system_scheduler_task
+    if agent_system_scheduler_task is None or agent_system_scheduler_task.done():
+        agent_system_scheduler_task = asyncio.create_task(agent_system_scheduler_loop())
 
 
 @app.on_event("startup")
@@ -273,16 +273,16 @@ async def startup():
         except Exception as e:
             print(f"⚠️  Could not create Neo4j indices: {e}")
 
-    swarm_scheduler_stop.clear()
-    start_swarm_scheduler()
+    agent_system_scheduler_stop.clear()
+    start_agent_system_scheduler()
 
 @app.on_event("shutdown")
 async def shutdown():
-    swarm_scheduler_stop.set()
-    if swarm_scheduler_task:
-        swarm_scheduler_task.cancel()
+    agent_system_scheduler_stop.set()
+    if agent_system_scheduler_task:
+        agent_system_scheduler_task.cancel()
         with contextlib.suppress(asyncio.CancelledError):
-            await swarm_scheduler_task
+            await agent_system_scheduler_task
 
 def check_connections():
     """Safety check to ensure database drivers are initialized."""
@@ -301,7 +301,7 @@ def check_connections():
 @app.get("/api/graph")
 def get_graph(mode: str = Query("deep", description="Graph mode: 'macro', 'deep', or 'temporal'")):
     """
-    SOTA: Repository-Level Logic as a Metabolic Map
+    SOTA: Repository-Level Logic as a Architectural Map
     Research: "Code Graph Model (CGM): A Graph-Integrated LLM for Repo-Level Tasks" (2024)
     Validation: Proves that multi-hop graph structures provide superior context 
     grounding compared to flat vector retrieval.
@@ -360,10 +360,10 @@ def get_graph(mode: str = Query("deep", description="Graph mode: 'macro', 'deep'
     return {"nodes": nodes, "links": links}
 
 
-# ── Day 8: Cellular (Hierarchical) & Interrogation Endpoints ────────
+# ── Day 8: Hierarchical (Hierarchical) & Interrogation Endpoints ────────
 
-@app.get("/api/v1/graph/cellular")
-def get_cellular_graph():
+@app.get("/api/v1/graph/hierarchical")
+def geverifierular_graph():
     """
     Returns the code graph as a nested hierarchy for D3 circle packing:
     Root → Modules → Classes → Functions
@@ -493,7 +493,7 @@ def interrogate_codebase(payload: InterrogationQuery):
     """
     Agentic interrogation endpoint. Takes a natural language query,
     invokes the RAG agent, and returns the answer plus entity names
-    to highlight in the Cellular view.
+    to highlight in the Hierarchical view.
     """
     check_connections()
     if not embedder:
@@ -649,24 +649,46 @@ def stats():
 
 
 @app.post("/api/ingest")
-def ingest_repository(req: IngestRequest):
+async def ingest_repository(req: IngestRequest, background_tasks: BackgroundTasks):
     """
-    Clones a GitHub repository and runs the biological dissection engine on it.
+    Clones a GitHub repository and runs the architectural dissection engine on it in the background.
     """
     if not req.repo_url.startswith("http"):
         raise HTTPException(status_code=400, detail="Invalid repository URL")
         
-    try:
-        result = fetch_and_index_repo(req.repo_url)
-        return result
-    except Exception as e:
-        msg = str(e)
-        if "RESOURCE_EXHAUSTED" in msg or "Quota exceeded" in msg:
-            raise HTTPException(
-                status_code=429,
-                detail="Embedding quota exceeded. Wait and retry or switch to an OpenAI-compatible embedding provider (EMBEDDING_PROVIDER=qwen).",
-            )
-        raise HTTPException(status_code=500, detail=msg)
+    def run_ingestion_and_notify():
+        try:
+            fetch_and_index_repo(req.repo_url)
+            # Try to notify via websocket
+            try:
+                loop = asyncio.get_running_loop()
+                loop.create_task(agent_system_manager.broadcast_json({
+                    "type": "INGESTION_COMPLETE",
+                    "repo_url": req.repo_url
+                }))
+            except RuntimeError:
+                asyncio.run(agent_system_manager.broadcast_json({
+                    "type": "INGESTION_COMPLETE",
+                    "repo_url": req.repo_url
+                }))
+        except Exception as e:
+            print(f"Ingestion failed: {e}")
+            try:
+                loop = asyncio.get_running_loop()
+                loop.create_task(agent_system_manager.broadcast_json({
+                    "type": "INGESTION_FAILED",
+                    "repo_url": req.repo_url,
+                    "error": str(e)
+                }))
+            except RuntimeError:
+                asyncio.run(agent_system_manager.broadcast_json({
+                    "type": "INGESTION_FAILED",
+                    "repo_url": req.repo_url,
+                    "error": str(e)
+                }))
+
+    background_tasks.add_task(run_ingestion_and_notify)
+    return {"status": "Ingestion started in background"}
 
 
 @app.post("/api/file")
@@ -764,7 +786,7 @@ def get_uml(name: str = Query(..., description="Name of the Class or Module")):
     uml_code = graph.get_uml_diagram(name)
     return {"name": name, "mermaid": uml_code}
 
-# --- Day 7: Immune Swarm WebSocket ---
+# --- Day 7: Agent AgentSystem WebSocket ---
 # --- Evolutionary (Temporal) Endpoints ---
 
 @app.get("/api/evolution/timeline")
@@ -772,21 +794,21 @@ async def get_evolution_timeline(limit: int = 100):
     """
     SOTA: Paleontology of Code (Evolutionary Timeline)
     Research: "Visualizing Software Evolution using Git"
-    Validation: Provides a high-resolution timeline of all mutations.
+    Validation: Provides a high-resolution timeline of all patchs.
     """
     return temporal.get_evolution_timeline(limit)
 
 @app.get("/api/evolution/node_history")
 async def get_node_history(file_path: str):
     """
-    Returns the evolutionary history of a specific node's DNA sequence.
+    Returns the evolutionary history of a specific node's source sequence.
     """
     return temporal.get_entity_history(file_path)
 
 @app.get("/api/evolution/state/{commit_hash}")
 async def get_state_at(commit_hash: str):
     """
-    Reconstructs the organism's state at a specific point in time.
+    Reconstructs the system's state at a specific point in time.
     """
     return temporal.reconstruct_state_at(commit_hash)
 
@@ -825,15 +847,15 @@ async def analyze_vision(path: str, query: str = "Analyze the visual health and 
     """
     return await vision.analyze_visual_health(path, query)
 
-@app.websocket("/ws/immune_swarm")
+@app.websocket("/ws/agent_agent_system")
 async def websocket_endpoint(websocket: WebSocket):
-    global latest_crispr_proposal
-    await swarm_manager.connect(websocket)
+    global latest_autoFix_proposal
+    await agent_system_manager.connect(websocket)
     try:
         # 1. Send Initial Welcome
         await websocket.send_json({
             "type": "LOG",
-            "message": "🔬 Connection Established. Helix Immune System Online."
+            "message": "🔬 Connection Established. Helix AgentSystem Online."
         })
 
         # 2. Listen for 'DEPLOY_SWARM' command
@@ -844,13 +866,13 @@ async def websocket_endpoint(websocket: WebSocket):
             if message.get("command") == "DEPLOY_SWARM":
                 await websocket.send_json({
                     "type": "LOG",
-                    "message": "🚀 Deploying Immune Swarm Multi-Agent Workflow..."
+                    "message": "🚀 Deploying Agent AgentSystem Multi-Agent Workflow..."
                 })
 
-                # Initial state for the swarm
-                state = build_swarm_state()
+                # Initial state for the agent_system
+                state = build_agent_system_state()
 
-                # Run the LangGraph Swarm
+                # Run the LangGraph AgentSystem
                 # We'll stream the results back to the frontend
                 # Using a thread pool to avoid blocking the async loop if needed, 
                 # but for now we'll just run it as is since it's a test.
@@ -871,8 +893,8 @@ async def websocket_endpoint(websocket: WebSocket):
                         await asyncio.sleep(1.5)  # Narrative pacing
                     log_index = len(new_logs)
 
-                # Process Swarm (Async Streaming)
-                async for output in immune_swarm.astream(state):
+                # Process AgentSystem (Async Streaming)
+                async for output in agent_agent_system.astream(state):
                     # output is a dict of {node_name: state_delta}
                     for _, delta in output.items():
                         if "logs" in delta:
@@ -889,8 +911,8 @@ async def websocket_endpoint(websocket: WebSocket):
                             final_state.update(delta)
 
                 if final_state.get("optimization_proposal"):
-                    payload = build_crispr_payload(final_state)
-                    latest_crispr_proposal = payload
+                    payload = build_autoFix_payload(final_state)
+                    latest_autoFix_proposal = payload
                     await websocket.send_json(payload)
     
     except WebSocketDisconnect:
@@ -899,10 +921,10 @@ async def websocket_endpoint(websocket: WebSocket):
         print(f"WebSocket error: {e}")
         await websocket.close()
     finally:
-        swarm_manager.disconnect(websocket)
+        agent_system_manager.disconnect(websocket)
 
-@app.post("/api/verify_mutation")
-async def verify_mutation_api(req: MutationRequest):
+@app.post("/api/verify_patch")
+async def verify_patch_api(req: PatchRequest):
     """
     SOTA: Shadow Verification (Digital Twin)
     Research: "Verified Program Repair via Staging"
@@ -910,7 +932,7 @@ async def verify_mutation_api(req: MutationRequest):
     before physical commitment.
     """
     try:
-        await swarm_manager.broadcast_json({
+        await agent_system_manager.broadcast_json({
             "type": "SHADOW_VERIFY",
             "state": "START",
             "node": req.node,
@@ -920,13 +942,13 @@ async def verify_mutation_api(req: MutationRequest):
         # We use a default test command from env or a sensible default
         test_cmd = os.getenv("MUTATION_TEST_COMMAND", "python -m py_compile {file_path}")
         
-        result = sandbox.run_staged_mutation(req.file_path, req.node, req.proposal, test_cmd)
+        result = sandbox.run_staged_patch(req.file_path, req.node, req.proposal, test_cmd)
         
         # Broadcast the sandbox logs
         for log in result["logs"]:
-            await swarm_manager.broadcast_json({"type": "LOG", "message": log})
+            await agent_system_manager.broadcast_json({"type": "LOG", "message": log})
         
-        await swarm_manager.broadcast_json({
+        await agent_system_manager.broadcast_json({
             "type": "SHADOW_VERIFY",
             "state": "END",
             "node": req.node,
@@ -935,21 +957,21 @@ async def verify_mutation_api(req: MutationRequest):
             
         return result
     except Exception as e:
-        await swarm_manager.broadcast_json({
+        await agent_system_manager.broadcast_json({
             "type": "LOG",
             "message": f"❌ Shadow Verification failed: {str(e)}",
         })
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/api/accept_mutation")
-async def accept_mutation_api(req: MutationRequest):
+@app.post("/api/accept_patch")
+async def accept_patch_api(req: PatchRequest):
     try:
-        success, message = apply_mutation(req.file_path, req.node, req.proposal)
+        success, message = apply_patch(req.file_path, req.node, req.proposal)
         if success:
             # Re-index the modified file to update the graph
             if graph:
                 # We could run a more precise sync, but for now we'll simulate it
-                print(f"🧬 CRISPR: Physical mutation of {req.node} confirmed. Re-syncing...")
+                print(f"🧬 AutoFix: Physical patch of {req.node} confirmed. Re-syncing...")
             return {"success": True, "message": message}
         return {"success": False, "message": message}
     except Exception as e:

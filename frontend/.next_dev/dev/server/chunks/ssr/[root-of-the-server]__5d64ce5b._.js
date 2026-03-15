@@ -50,7 +50,7 @@ const LINK_COLORS = {
     EXTENDS: "#ffcc00",
     HAS_METHOD: "#00ffcc",
     EVOLVED_INTO: "#00ffcc",
-    MUTATED_IN: "#a200ff" // Mutation link
+    MUTATED_IN: "#a200ff" // Patch link
 };
 function GraphVisualizer({ graphData, onNodeClick, focusedNode, currentTimestamp, seedMode = false, transitioning = false }) {
     const fgRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])();
@@ -711,12 +711,12 @@ function GraphVisualizer({ graphData, onNodeClick, focusedNode, currentTimestamp
     }, this);
 }
 }),
-"[project]/src/app/components/CellularGraph.js [app-ssr] (ecmascript)", ((__turbopack_context__) => {
+"[project]/src/app/components/HierarchicalGraph.js [app-ssr] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
 __turbopack_context__.s([
     "default",
-    ()=>CellularGraph
+    ()=>HierarchicalGraph
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
@@ -743,7 +743,7 @@ const TYPE_FILLS = {
     Class: "rgba(153, 69, 255, 0.10)",
     Function: "rgba(0, 255, 136, 0.15)"
 };
-function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
+function HierarchicalGraph({ data, onNodeClick, highlightNodes = [] }) {
     const containerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])();
     const svgRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])();
     const [dimensions, setDimensions] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({
@@ -910,7 +910,7 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
                 ref: svgRef,
                 className: "w-full h-full"
             }, void 0, false, {
-                fileName: "[project]/src/app/components/CellularGraph.js",
+                fileName: "[project]/src/app/components/HierarchicalGraph.js",
                 lineNumber: 240,
                 columnNumber: 13
             }, this),
@@ -940,7 +940,7 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
                             "]"
                         ]
                     }, void 0, true, {
-                        fileName: "[project]/src/app/components/CellularGraph.js",
+                        fileName: "[project]/src/app/components/HierarchicalGraph.js",
                         lineNumber: 259,
                         columnNumber: 21
                     }, this),
@@ -948,7 +948,7 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
                         className: "text-[0.85rem] font-semibold text-[#e8ecf5] font-mono break-all mb-2",
                         children: tooltip.content.name
                     }, void 0, false, {
-                        fileName: "[project]/src/app/components/CellularGraph.js",
+                        fileName: "[project]/src/app/components/HierarchicalGraph.js",
                         lineNumber: 262,
                         columnNumber: 21
                     }, this),
@@ -960,14 +960,14 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
                             tooltip.content.type === "Module" ? "classes/functions" : "methods"
                         ]
                     }, void 0, true, {
-                        fileName: "[project]/src/app/components/CellularGraph.js",
+                        fileName: "[project]/src/app/components/HierarchicalGraph.js",
                         lineNumber: 267,
                         columnNumber: 25
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("hr", {
                         className: "my-2 border-[rgba(0,229,255,0.1)]"
                     }, void 0, false, {
-                        fileName: "[project]/src/app/components/CellularGraph.js",
+                        fileName: "[project]/src/app/components/HierarchicalGraph.js",
                         lineNumber: 272,
                         columnNumber: 21
                     }, this),
@@ -980,19 +980,19 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
                                     className: "text-[#00e5ff] font-semibold",
                                     children: "Clinical Data:"
                                 }, void 0, false, {
-                                    fileName: "[project]/src/app/components/CellularGraph.js",
+                                    fileName: "[project]/src/app/components/HierarchicalGraph.js",
                                     lineNumber: 278,
                                     columnNumber: 33
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
-                                    fileName: "[project]/src/app/components/CellularGraph.js",
+                                    fileName: "[project]/src/app/components/HierarchicalGraph.js",
                                     lineNumber: 278,
                                     columnNumber: 101
                                 }, this),
                                 tooltip.content.shadow_doc
                             ]
                         }, void 0, true, {
-                            fileName: "[project]/src/app/components/CellularGraph.js",
+                            fileName: "[project]/src/app/components/HierarchicalGraph.js",
                             lineNumber: 277,
                             columnNumber: 29
                         }, this) : tooltip.content.docstring ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1002,43 +1002,43 @@ function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
                                     className: "text-[#00ff88] font-semibold",
                                     children: "Raw Docstring:"
                                 }, void 0, false, {
-                                    fileName: "[project]/src/app/components/CellularGraph.js",
+                                    fileName: "[project]/src/app/components/HierarchicalGraph.js",
                                     lineNumber: 283,
                                     columnNumber: 33
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
-                                    fileName: "[project]/src/app/components/CellularGraph.js",
+                                    fileName: "[project]/src/app/components/HierarchicalGraph.js",
                                     lineNumber: 283,
                                     columnNumber: 101
                                 }, this),
                                 tooltip.content.docstring
                             ]
                         }, void 0, true, {
-                            fileName: "[project]/src/app/components/CellularGraph.js",
+                            fileName: "[project]/src/app/components/HierarchicalGraph.js",
                             lineNumber: 282,
                             columnNumber: 29
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "italic text-[#4a5568]",
                             children: "No documentation found. Click to generate Shadow Doc in panel."
                         }, void 0, false, {
-                            fileName: "[project]/src/app/components/CellularGraph.js",
+                            fileName: "[project]/src/app/components/HierarchicalGraph.js",
                             lineNumber: 287,
                             columnNumber: 29
                         }, this)
                     }, void 0, false, {
-                        fileName: "[project]/src/app/components/CellularGraph.js",
+                        fileName: "[project]/src/app/components/HierarchicalGraph.js",
                         lineNumber: 274,
                         columnNumber: 21
                     }, this)
                 ]
             }, void 0, true, {
-                fileName: "[project]/src/app/components/CellularGraph.js",
+                fileName: "[project]/src/app/components/HierarchicalGraph.js",
                 lineNumber: 244,
                 columnNumber: 17
             }, this)
         ]
     }, void 0, true, {
-        fileName: "[project]/src/app/components/CellularGraph.js",
+        fileName: "[project]/src/app/components/HierarchicalGraph.js",
         lineNumber: 239,
         columnNumber: 9
     }, this);
@@ -1923,7 +1923,7 @@ __turbopack_context__.s([
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$GraphVisualizer$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/GraphVisualizer.js [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CellularGraph$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/CellularGraph.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$HierarchicalGraph$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/HierarchicalGraph.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ChatPanel$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/ChatPanel.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$RepoRootNode$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/RepoRootNode.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CodeDirectory$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/CodeDirectory.js [app-ssr] (ecmascript)");
@@ -1964,7 +1964,7 @@ function Home() {
         max: Date.now() / 1000
     });
     const [swarmLogs, setSwarmLogs] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
-    const [crisprProposal, setCrisprProposal] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [autoFixProposal, setAutoFixProposal] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [swarmActive, setSwarmActive] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [swarmConnected, setSwarmConnected] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [autoEvolve, setAutoEvolve] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
@@ -2089,7 +2089,7 @@ function Home() {
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const selectionName = selectedNode?.name || null;
         const selectionChanged = selectionName !== lastSelectionRef.current;
-        const swarmSignal = swarmActive || Boolean(crisprProposal);
+        const swarmSignal = swarmActive || Boolean(autoFixProposal);
         if (selectionChanged || swarmSignal) {
             setAnalysisDismissed(false);
         }
@@ -2102,17 +2102,17 @@ function Home() {
     }, [
         selectedNode,
         swarmActive,
-        crisprProposal,
+        autoFixProposal,
         analysisDismissed
     ]);
     const connectSwarmSocket = ()=>{
-        const wsUrl = API_URL.replace("http", "ws") + "/ws/immune_swarm";
+        const wsUrl = API_URL.replace("http", "ws") + "/ws/agent_swarm";
         if (socketRef.current?.readyState === WebSocket.OPEN || socketRef.current?.readyState === WebSocket.CONNECTING) {
             return;
         }
         const socket = new WebSocket(wsUrl);
         socket.onopen = ()=>{
-            console.log("Connected to Immune Swarm WebSocket");
+            console.log("Connected to Agent Swarm WebSocket");
             setSwarmConnected(true);
             setSwarmLogs((prev)=>[
                     ...prev,
@@ -2133,15 +2133,15 @@ function Home() {
                         ...prev,
                         data.message
                     ].slice(-50)); // Keep last 50 logs
-            } else if (data.type === "CRISPR_PROPOSAL") {
+            } else if (data.type === "AutoFix_PROPOSAL") {
                 if (autoEvolveRef.current) {
                     setSwarmLogs((prev)=>[
                             ...prev,
-                            "⚡ Auto-Evolve override: applying mutation..."
+                            "⚡ Auto-Evolve override: applying patch..."
                         ].slice(-50));
-                    acceptMutation(data);
+                    acceptPatch(data);
                 } else {
-                    setCrisprProposal(data);
+                    setAutoFixProposal(data);
                 }
                 setSwarmActive(false);
             } else if (data.type === "SHADOW_VERIFY") {
@@ -2157,7 +2157,7 @@ function Home() {
             }
         };
         socket.onclose = ()=>{
-            console.log("Disconnected from Immune Swarm WebSocket");
+            console.log("Disconnected from Agent Swarm WebSocket");
             setSwarmConnected(false);
             setSwarmLogs((prev)=>[
                     ...prev,
@@ -2223,7 +2223,7 @@ function Home() {
         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
             setSwarmActive(true);
             setSwarmLogs([]);
-            setCrisprProposal(null);
+            setAutoFixProposal(null);
             socketRef.current.send(JSON.stringify({
                 command: "DEPLOY_SWARM"
             }));
@@ -2246,10 +2246,10 @@ flowchart TD
   C --> D[Neural Link: Ask Questions]
   C --> E[Select Node → Analysis]
   E --> F[Shadow Doc / UML]
-  C --> G[Deploy Immune Swarm]
+  C --> G[Deploy Agent Swarm]
   G --> H[Review Proposal]
   H --> I{Auto-Evolve?}
-  I -->|Yes| J[Apply Mutation]
+  I -->|Yes| J[Apply Patch]
   I -->|No| K[Accept / Reject]
   J --> L[Re-index & Observe]
   K --> L
@@ -2268,22 +2268,22 @@ flowchart TD
         ;
         setOnboarded(true);
     };
-    const verifyMutation = async ()=>{
-        if (!crisprProposal) return;
+    const verifyPatch = async ()=>{
+        if (!autoFixProposal) return;
         setSwarmLogs((prev)=>[
                 ...prev,
-                `🛡️ Sandbox: Initiating isolated staging for ${crisprProposal.node}...`
+                `🛡️ Sandbox: Initiating isolated staging for ${autoFixProposal.node}...`
             ]);
         try {
-            const res = await fetch(`${API_URL}/api/verify_mutation`, {
+            const res = await fetch(`${API_URL}/api/verify_patch`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    node: crisprProposal.node,
-                    proposal: crisprProposal.proposal,
-                    file_path: crisprProposal.file_path
+                    node: autoFixProposal.node,
+                    proposal: autoFixProposal.proposal,
+                    file_path: autoFixProposal.file_path
                 })
             });
             const data = await res.json();
@@ -2317,7 +2317,7 @@ flowchart TD
             if (data.status === "success") {
                 setSwarmLogs((prev)=>[
                         ...prev,
-                        "🧬 Vision: Snapshot secured. Sequencing visual DNA..."
+                        "🧬 Vision: Snapshot secured. Sequencing visual source code..."
                     ].slice(-50));
                 // 2. Analyze Vision
                 return fetch(`${API_URL}/api/vision/analyze?path=${encodeURIComponent(data.path)}`);
@@ -2340,16 +2340,16 @@ flowchart TD
                 ].slice(-50));
         });
     };
-    const acceptMutation = async (proposalOverride)=>{
-        const proposal = proposalOverride || crisprProposal;
+    const acceptPatch = async (proposalOverride)=>{
+        const proposal = proposalOverride || autoFixProposal;
         if (!proposal) return;
         setSwarmLogs((prev)=>[
                 ...prev,
-                "🧬 CRISPR: Mutation starting..."
+                "🧬 AutoFix: Patch starting..."
             ]);
-        // Phase 3: CRISPR Implementation will go here
+        // Phase 3: AutoFix Implementation will go here
         try {
-            const res = await fetch(`${API_URL}/api/accept_mutation`, {
+            const res = await fetch(`${API_URL}/api/accept_patch`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -2364,20 +2364,20 @@ flowchart TD
             if (data.success) {
                 setSwarmLogs((prev)=>[
                         ...prev,
-                        "✅ Mutation Physical: Code successfully re-spliced."
+                        "✅ Patch Physical: Code successfully re-spliced."
                     ]);
-                setCrisprProposal(null);
+                setAutoFixProposal(null);
                 fetchGraphData();
             } else {
                 setSwarmLogs((prev)=>[
                         ...prev,
-                        `❌ Mutation Rejected: ${data.message || "Validation failed."}`
+                        `❌ Patch Rejected: ${data.message || "Validation failed."}`
                     ]);
             }
         } catch (err) {
             setSwarmLogs((prev)=>[
                     ...prev,
-                    "❌ Mutation Failed: Splicing error."
+                    "❌ Patch Failed: Splicing error."
                 ]);
         }
     };
@@ -2668,7 +2668,7 @@ flowchart TD
                             onClick: ()=>setShowCode((prev)=>!prev),
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    children: "DNA Source"
+                                    children: "source_code Source"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/page.js",
                                     lineNumber: 624,
@@ -2746,7 +2746,7 @@ flowchart TD
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                             className: "text-neon-cyan text-[10px] uppercase tracking-widest font-bold flex items-center gap-2",
-                            children: "🧬 DNA Evolution Sequence"
+                            children: "🧬 source code Evolution Sequence"
                         }, void 0, false, {
                             fileName: "[project]/src/app/page.js",
                             lineNumber: 643,
@@ -2802,7 +2802,7 @@ flowchart TD
                                     columnNumber: 17
                                 }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 className: "text-muted text-[10px] italic",
-                                children: "No historical mutations found."
+                                children: "No historical patchs found."
                             }, void 0, false, {
                                 fileName: "[project]/src/app/page.js",
                                 lineNumber: 659,
@@ -2932,7 +2932,7 @@ flowchart TD
         {
             id: "swarm",
             label: "Swarm",
-            description: "Deploy the Immune Swarm for analysis.",
+            description: "Deploy the Agent Swarm for analysis.",
             done: swarmLogs.length > 0 || swarmActive
         }
     ];
@@ -2957,7 +2957,7 @@ flowchart TD
                 children: [
                     viewMode === "cellular" && cellularData && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "absolute inset-0 animate-fade-in",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CellularGraph$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$HierarchicalGraph$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                             data: cellularData,
                             highlightNodes: highlightNodes,
                             onNodeClick: (node)=>{
@@ -3766,7 +3766,7 @@ flowchart TD
                                                     lineNumber: 1020,
                                                     columnNumber: 21
                                                 }, this),
-                                                "Immune Swarm Monologue"
+                                                "Agent Swarm Monologue"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/page.js",
@@ -3850,7 +3850,7 @@ flowchart TD
                 lineNumber: 951,
                 columnNumber: 9
             }, this),
-            crisprProposal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            autoFixProposal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] w-[500px] animate-slide-up",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "helix-panel p-6 border-2 border-neon-cyan",
@@ -3870,7 +3870,7 @@ flowchart TD
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                             className: "text-neon-emerald font-bold uppercase tracking-widest text-lg",
-                                            children: "CRISPR Mutation Proposal"
+                                            children: "Code Patch Proposal"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/page.js",
                                             lineNumber: 1048,
@@ -3880,7 +3880,7 @@ flowchart TD
                                             className: "text-[10px] text-secondary uppercase tracking-wider",
                                             children: [
                                                 "Target Entity: ",
-                                                crisprProposal.node
+                                                autoFixProposal.node
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/page.js",
@@ -3914,7 +3914,7 @@ flowchart TD
                                     className: "text-gray-400 text-xs mb-4 italic",
                                     children: [
                                         '"',
-                                        crisprProposal.vulnerability.substring(0, 200),
+                                        autoFixProposal.vulnerability.substring(0, 200),
                                         '..."'
                                     ]
                                 }, void 0, true, {
@@ -3924,7 +3924,7 @@ flowchart TD
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                     className: "text-neon-emerald text-[11px] font-bold uppercase mb-2",
-                                    children: "Recommended DNA Slice (Mutation):"
+                                    children: "Recommended source code Slice (Patch):"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/page.js",
                                     lineNumber: 1057,
@@ -3933,7 +3933,7 @@ flowchart TD
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("pre", {
                                     className: "text-[10px] font-mono text-gray-300 bg-black/40 p-3 rounded border border-white/5 overflow-x-auto",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("code", {
-                                        children: crisprProposal.proposal
+                                        children: autoFixProposal.proposal
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/page.js",
                                         lineNumber: 1059,
@@ -3954,7 +3954,7 @@ flowchart TD
                             className: "flex flex-col gap-3",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: verifyMutation,
+                                    onClick: verifyPatch,
                                     className: "w-full helix-button-secondary py-3 text-xs border-neon-purple text-neon-purple hover:bg-neon-purple/10",
                                     children: "🛡️ Verify in Sandbox (Shadow Staging)"
                                 }, void 0, false, {
@@ -3966,18 +3966,18 @@ flowchart TD
                                     className: "flex gap-4",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                            onClick: acceptMutation,
+                                            onClick: acceptPatch,
                                             className: "flex-1 helix-button-primary py-3 text-xs",
-                                            children: "Accept & Splicing DNA"
+                                            children: "Accept & Splicing source code"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/page.js",
                                             lineNumber: 1071,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                            onClick: ()=>setCrisprProposal(null),
+                                            onClick: ()=>setAutoFixProposal(null),
                                             className: "flex-1 helix-button-secondary py-3 text-xs",
-                                            children: "Reject Mutation"
+                                            children: "Reject Patch"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/page.js",
                                             lineNumber: 1077,
@@ -4057,10 +4057,10 @@ flowchart TD
                             className: `helix-dock-item helix-dock-item--primary ${swarmConnected ? "" : "helix-dock-item--offline"}`,
                             onClick: deploySwarm,
                             disabled: swarmActive,
-                            "aria-label": "Immune Swarm",
-                            "data-label": "Immune Swarm",
+                            "aria-label": "Agent Swarm",
+                            "data-label": "Agent Swarm",
                             "data-desc": swarmDockDesc,
-                            title: "Immune Swarm",
+                            title: "Agent Swarm",
                             children: "🧬"
                         }, void 0, false, {
                             fileName: "[project]/src/app/page.js",
@@ -4598,7 +4598,7 @@ flowchart TD
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                     className: "text-[9px] text-secondary uppercase tracking-wider",
-                                                    children: "Zero-click mutations"
+                                                    children: "Zero-click patchs"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/page.js",
                                                     lineNumber: 1324,
@@ -4800,7 +4800,7 @@ flowchart TD
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                                    children: "Use Neural Link to ask questions or deploy the Immune Swarm."
+                                                    children: "Use Neural Link to ask questions or deploy the Agent Swarm."
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/page.js",
                                                     lineNumber: 1378,

@@ -6,8 +6,8 @@ from datetime import datetime
 class TemporalEngine:
     """
     SOTA: Temporal Morphogenesis (Time-Travel)
-    Research: "Software Evolution as a Biological Process"
-    Validation: Reconstructs the evolutionary timeline of the organism 
+    Research: "Software Evolution as a System Process"
+    Validation: Reconstructs the evolutionary timeline of the system 
     using Git history, enabling retrospective analysis and delta-tracking.
     """
     def __init__(self, workspace_root: str):
@@ -55,7 +55,7 @@ class TemporalEngine:
 
     def reconstruct_state_at(self, commit_hash: str) -> Dict[str, Any]:
         """
-        Retrieves the structural state of the organism at a specific point in time.
+        Retrieves the structural state of the system at a specific point in time.
         Note: This is a heavy operation. For now, it returns the changed files in that commit.
         """
         try:
@@ -78,7 +78,7 @@ class TemporalEngine:
 
     def get_entity_history(self, file_path: str) -> List[Dict[str, Any]]:
         """
-        Returns the mutation history for a specific DNA sequence (file).
+        Returns the patch history for a specific DNA sequence (file).
         """
         try:
             rel_path = os.path.relpath(file_path, self.workspace_root)

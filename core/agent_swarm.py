@@ -115,7 +115,7 @@ async def t_cell_healer(state: CellularState):
     SOTA: Autonomous Healing Agents
     Research: "RepairAgent: An Autonomous, LLM-Based Agent for Program Repair" (ICSE 2025)
     Validation: Treats the LLM as an autonomous agent that plans and executes surgically 
-    targeted 'CRISPR Mutations' based on retrieved graph context.
+    targeted 'Code Patchs' based on retrieved graph context.
     """
     target = state["identified_node"]
     vulnerability = state["vulnerability"]
@@ -129,8 +129,8 @@ async def t_cell_healer(state: CellularState):
         return {"logs": state["logs"] + [log, f"❌ Error: Could not locate physical DNA for '{target}'."]}
 
     try:
-        # 2. Ask LLM for a 'Mutation Proposal'
-        prompt = f"HEALING PROTOCOL\nTarget: {target}\nPathogen: {vulnerability}\n\nCurrent DNA (Code):\n```python\n{code_content}\n```\n\nTask: Propose a 'CRISPR Mutation' (optimized code) that resolves the pathogen and improves architectural stability. ONLY return the new code block within markdown code fences."
+        # 2. Ask LLM for a 'Patch Proposal'
+        prompt = f"HEALING PROTOCOL\nTarget: {target}\nPathogen: {vulnerability}\n\nCurrent DNA (Code):\n```python\n{code_content}\n```\n\nTask: Propose a 'Code Patch' (optimized code) that resolves the pathogen and improves architectural stability. ONLY return the new code block within markdown code fences."
         
         response = await llm.ainvoke([
             SystemMessage(content="You are a T-Cell Healer AI. You surgically repair code."), 
@@ -141,14 +141,14 @@ async def t_cell_healer(state: CellularState):
             "optimization_proposal": response.content,
             "file_path": file_path,
             "code_content": code_content,
-            "logs": state["logs"] + [log, "🧬 CRISPR Mutation synthesized. Proposal ready for deployment."]
+            "logs": state["logs"] + [log, "🧬 Code Patch synthesized. Proposal ready for deployment."]
         }
     except Exception as e:
         return {"logs": state["logs"] + [log, f"❌ Error during healing: {str(e)}"]}
 
-def create_immune_swarm():
+def create_agent_swarm():
     """
-    SOTA: Artificial Immune System (AIS) Orchestration
+    SOTA: Artificial Agent System (AIS) Orchestration
     Research: "DCW-RNN: Improving Vulnerability Detection Using AIS" (IEEE)
     Validation: Orchestrates agents as a Dendritic Cell Algorithm (DCA) to detect 
     complex dependencies in vulnerable object-oriented software metrics.
@@ -164,7 +164,7 @@ def create_immune_swarm():
     
     return workflow.compile()
 
-immune_swarm = create_immune_swarm()
+agent_swarm = create_agent_swarm()
 
 if __name__ == "__main__":
     # Test run
@@ -178,10 +178,10 @@ if __name__ == "__main__":
         "logs": []
     }
     
-    print("🚀 Deploying Immune Swarm...")
-    final_state = immune_swarm.invoke(initial_state)
+    print("🚀 Deploying Agent System...")
+    final_state = agent_swarm.invoke(initial_state)
     for log in final_state["logs"]:
         print(log)
     if final_state["optimization_proposal"]:
-        print("\n--- CRISPR PROPOSAL ---")
+        print("\n--- AutoFix PROPOSAL ---")
         print(final_state["optimization_proposal"])

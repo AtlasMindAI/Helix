@@ -6,7 +6,7 @@ graph = GraphMemory()
 
 def run_helix_sync_sequence(payload: dict):
     """
-    Biological Sync Flow: Detect -> Re-Map -> Re-Document.
+    System Sync Flow: Detect -> Re-Map -> Re-Document.
     When a webhook push event occurs, we find affected files and trigger Shadow Docs.
     """
     commits = payload.get('commits', [])
@@ -51,7 +51,7 @@ def run_helix_sync_sequence(payload: dict):
                         print(f"Writing Shadow Doc for {node}...")
                         generate_shadow_doc(node)
                         
-            print("✅ Sync sequence complete. Organism stabilized.")
+            print("✅ Sync sequence complete. System stabilized.")
         except Exception as e:
             print(f"❌ Error during sync sequence: {e}")
     else:

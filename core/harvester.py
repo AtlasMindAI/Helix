@@ -18,7 +18,7 @@ def fetch_and_index_repo(repo_url):
         print(f"Repo already exists at {local_path}, skipping clone.")
     
     # 2. Trigger the Day 4 Ingestion Pipeline
-    print("Beginning biological dissection...")
+    print("Beginning system dissection...")
     ingest_project(local_path, repo_url=repo_url)
     
     return {"status": "Success", "path": local_path, "repo": repo_url.split('/')[-1]}

@@ -4,7 +4,7 @@ import os
 def get_chat_model(*, temperature: float = 0.2, model: str | None = None):
     """
     Returns a chat LLM based on environment configuration.
-    Defaults to Google Gemini as the verified 'organism' brain.
+    Defaults to Google Gemini as the verified 'system' brain.
     """
     provider = os.getenv("LLM_PROVIDER", "google").strip().lower()
 

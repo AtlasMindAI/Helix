@@ -82,3 +82,7 @@ INFO:     127.0.0.1:38416 - "GET /api/tree HTTP/1.1" 200 OK
 Received notification from DBMS server: <GqlStatusObject gql_status='01N51', status_description='warn: relationship type does not exist. The relationship type `BELONGS_TO` does not exist in database `neo4j`. Verify that the spelling is correct.', position=<SummaryInputPosition line=1, column=20, offset=19>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 19, 'line': 1, 'column': 20}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'MATCH (m:Module)-[:BELONGS_TO]->(r:Repository) RETURN m.name AS mod, r.name AS repo'
 INFO:     127.0.0.1:38416 - "GET /api/tree HTTP/1.1" 200 OK
 INFO:     connection closed
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [21714]

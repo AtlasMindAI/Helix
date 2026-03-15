@@ -23,7 +23,7 @@ const LINK_COLORS = {
     EXTENDS: "#ffcc00",    // Chrome Yellow
     HAS_METHOD: "#00ffcc", // Turquoise
     EVOLVED_INTO: "#00ffcc", // Timeline flow
-    MUTATED_IN: "#a200ff"    // Mutation link
+    MUTATED_IN: "#a200ff"    // Patch link
 };
 
 export default function GraphVisualizer({ graphData, onNodeClick, focusedNode, currentTimestamp, shadowNodes = new Set(), seedMode = false, transitioning = false }) {
