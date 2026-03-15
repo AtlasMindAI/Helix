@@ -1,0 +1,5 @@
+- Ideas for better representation than 3D nodes and connections:
+  - 1. A collapsible tree hierarchy (like a file explorer, but for Python syntax)
+  - 2. 2D dependency matrices (what calls what in a grid)
+  - 3. A UML-style class diagram (Mermaid JS)
+  - 4. A split-pane architecture map (Modules on the left, their functions on the right)

@@ -1,0 +1,17 @@
+neo4j
+qdrant-client
+google-genai
+python-dotenv
+fastapi
+uvicorn
+GitPython
+langchain
+langchain-community
+langchain-google-genai
+langchain-openai
+fastembed
+astor
+networkx
+python-louvain
+langgraph
+cohere

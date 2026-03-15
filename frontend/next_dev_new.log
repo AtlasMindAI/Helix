@@ -1,0 +1,33 @@
+nohup: ignoring input
+
+> frontend@0.1.0 dev
+> next dev
+
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.29.170:3000
+
+✓ Starting...
+✓ Ready in 1575ms
+○ Compiling / ...
+ GET / 200 in 6.4s (compile: 5.8s, render: 615ms)
+ GET / 200 in 394ms (compile: 191ms, render: 203ms)
+ GET / 200 in 146ms (compile: 54ms, render: 93ms)
+ GET / 200 in 407ms (compile: 186ms, render: 221ms)
+ GET / 200 in 96ms (compile: 38ms, render: 58ms)
+ GET / 200 in 246ms (compile: 123ms, render: 122ms)
+ GET / 200 in 207ms (compile: 80ms, render: 127ms)
+ GET / 200 in 204ms (compile: 77ms, render: 127ms)
+✓ Finished writing to filesystem cache in 11.1s
+✓ Finished filesystem cache database compaction in 10.5s
+ GET / 200 in 136ms (compile: 48ms, render: 88ms)
+ GET / 200 in 88ms (compile: 34ms, render: 55ms)
+ GET / 200 in 262ms (compile: 83ms, render: 180ms)
+ GET / 200 in 134ms (compile: 48ms, render: 86ms)
+ GET / 200 in 89ms (compile: 28ms, render: 61ms)
+ GET / 200 in 147ms (compile: 56ms, render: 91ms)
+ GET / 200 in 158ms (compile: 84ms, render: 74ms)
+ GET / 200 in 127ms (compile: 60ms, render: 68ms)
+⚠ Cross origin request detected from 192.168.29.170 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+ GET / 200 in 192ms (compile: 106ms, render: 86ms)

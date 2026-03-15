@@ -1,0 +1,36 @@
+# Environments
+.env
+.venv/
+venv/
+ENV/
+
+# Core project specific data / temporary dirs
+temp_repos/
+vision_snapshots/
+data/
+metadata/
+.helix_state.json
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# IDEs / Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+
+# Coverage / tests
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Mypy / Typecheckers
+.mypy_cache/
+.pytype/

@@ -1,0 +1,84 @@
+nohup: ignoring input
+/home/himanshu/internship/Helix/core/vision_engine.py:6: FutureWarning: 
+
+All support for the `google.generativeai` package has ended. It will no longer be receiving 
+updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+See README for more details:
+
+https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+
+  import google.generativeai as genai
+/home/himanshu/internship/Helix/api/server.py:241: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+/home/himanshu/internship/Helix/api/server.py:279: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("shutdown")
+INFO:     Started server process [21714]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:37424 - "WebSocket /ws/immune_swarm" [accepted]
+INFO:     connection open
+🧬 TemporalEngine initialized at: /home/himanshu/internship/Helix
+✅ Neo4j indices verified/created
+INFO:     127.0.0.1:47500 - "GET /api/stats HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     192.168.29.170:58684 - "WebSocket /ws/immune_swarm" [accepted]
+INFO:     connection open
+Received notification from DBMS server: <GqlStatusObject gql_status='01N50', status_description='warn: label does not exist. The label `Repository` does not exist in database `neo4j`. Verify that the spelling is correct.', position=<SummaryInputPosition line=1, column=10, offset=9>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 9, 'line': 1, 'column': 10}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'MATCH (r:Repository) RETURN r.name AS name, r.url AS url'
+Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `url` does not exist in database `neo4j`. Verify that the spelling is correct.', position=<SummaryInputPosition line=1, column=47, offset=46>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 46, 'line': 1, 'column': 47}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'MATCH (r:Repository) RETURN r.name AS name, r.url AS url'
+WebSocket disconnected
+INFO:     192.168.29.170:58664 - "GET /api/graph?mode=macro HTTP/1.1" 200 OK
+INFO:     192.168.29.170:58676 - "GET /api/v1/graph/cellular HTTP/1.1" 200 OK
+INFO:     192.168.29.170:58674 - "GET /api/stats HTTP/1.1" 200 OK
+Received notification from DBMS server: <GqlStatusObject gql_status='01N50', status_description='warn: label does not exist. The label `Repository` does not exist in database `neo4j`. Verify that the spelling is correct.', position=<SummaryInputPosition line=1, column=10, offset=9>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 9, 'line': 1, 'column': 10}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'MATCH (r:Repository) RETURN r.name AS name'
+Received notification from DBMS server: <GqlStatusObject gql_status='01N51', status_description='warn: relationship type does not exist. The relationship type `BELONGS_TO` does not exist in database `neo4j`. Verify that the spelling is correct.', position=<SummaryInputPosition line=1, column=20, offset=19>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 19, 'line': 1, 'column': 20}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'MATCH (m:Module)-[:BELONGS_TO]->(r:Repository) RETURN m.name AS mod, r.name AS repo'
+Received notification from DBMS server: <GqlStatusObject gql_status='01N50', status_description='warn: label does not exist. The label `Repository` does not exist in database `neo4j`. Verify that the spelling is correct.', position=<SummaryInputPosition line=1, column=36, offset=35>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 35, 'line': 1, 'column': 36}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'MATCH (m:Module)-[:BELONGS_TO]->(r:Repository) RETURN m.name AS mod, r.name AS repo'
+INFO:     192.168.29.170:58698 - "GET /api/tree HTTP/1.1" 200 OK
+Received notification from DBMS server: <GqlStatusObject gql_status='01N50', status_description='warn: label does not exist. The label `Repository` does not exist in database `neo4j`. Verify that the spelling is correct.', position=<SummaryInputPosition line=1, column=10, offset=9>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 9, 'line': 1, 'column': 10}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'MATCH (r:Repository) RETURN r.name AS name'
+Received notification from DBMS server: <GqlStatusObject gql_status='01N51', status_description='warn: relationship type does not exist. The relationship type `BELONGS_TO` does not exist in database `neo4j`. Verify that the spelling is correct.', position=<SummaryInputPosition line=1, column=20, offset=19>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 19, 'line': 1, 'column': 20}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'MATCH (m:Module)-[:BELONGS_TO]->(r:Repository) RETURN m.name AS mod, r.name AS repo'
+Received notification from DBMS server: <GqlStatusObject gql_status='01N50', status_description='warn: label does not exist. The label `Repository` does not exist in database `neo4j`. Verify that the spelling is correct.', position=<SummaryInputPosition line=1, column=36, offset=35>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 35, 'line': 1, 'column': 36}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'MATCH (m:Module)-[:BELONGS_TO]->(r:Repository) RETURN m.name AS mod, r.name AS repo'
+INFO:     192.168.29.170:58698 - "GET /api/tree HTTP/1.1" 200 OK
+INFO:     192.168.29.170:58112 - "OPTIONS /api/ingest HTTP/1.1" 200 OK
+Cloning https://github.com/AncientHearings/Protein-Protein-Interaction-Network...
+Beginning biological dissection...
+============================================================
+🔬 HELIX DISSECTION ENGINE — Scanning: /home/himanshu/internship/Helix/temp_repos/Protein-Protein-Interaction-Network
+============================================================
+✅ Connected to Memory Systems
+
+✨ Organism is stable. No changes detected (Delta Ingestion Active).
+INFO:     192.168.29.170:58112 - "POST /api/ingest HTTP/1.1" 200 OK
+INFO:     192.168.29.170:58112 - "GET /api/graph?mode=macro HTTP/1.1" 200 OK
+INFO:     192.168.29.170:58122 - "GET /api/stats HTTP/1.1" 200 OK
+INFO:     192.168.29.170:60878 - "GET /api/graph?mode=macro HTTP/1.1" 200 OK
+INFO:     192.168.29.170:60886 - "GET /api/stats HTTP/1.1" 200 OK
+INFO:     192.168.29.170:60886 - "GET /api/stats HTTP/1.1" 200 OK
+INFO:     192.168.29.170:60878 - "GET /api/graph?mode=deep HTTP/1.1" 200 OK
+INFO:     192.168.29.170:48320 - "GET /api/graph?mode=macro HTTP/1.1" 200 OK
+INFO:     192.168.29.170:48322 - "GET /api/stats HTTP/1.1" 200 OK
+INFO:     192.168.29.170:48320 - "GET /api/graph?mode=macro HTTP/1.1" 200 OK
+INFO:     192.168.29.170:48320 - "GET /api/graph?mode=macro HTTP/1.1" 200 OK
+INFO:     192.168.29.170:48322 - "GET /api/stats HTTP/1.1" 200 OK
+INFO:     192.168.29.170:48320 - "GET /api/stats HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:38434 - "WebSocket /ws/immune_swarm" [accepted]
+INFO:     connection open
+WebSocket disconnected
+INFO:     127.0.0.1:38388 - "GET /api/graph?mode=macro HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38432 - "GET /api/v1/graph/cellular HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38404 - "GET /api/stats HTTP/1.1" 200 OK
+Received notification from DBMS server: <GqlStatusObject gql_status='01N51', status_description='warn: relationship type does not exist. The relationship type `BELONGS_TO` does not exist in database `neo4j`. Verify that the spelling is correct.', position=<SummaryInputPosition line=1, column=20, offset=19>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 19, 'line': 1, 'column': 20}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'MATCH (m:Module)-[:BELONGS_TO]->(r:Repository) RETURN m.name AS mod, r.name AS repo'
+INFO:     127.0.0.1:38416 - "GET /api/tree HTTP/1.1" 200 OK
+Received notification from DBMS server: <GqlStatusObject gql_status='01N51', status_description='warn: relationship type does not exist. The relationship type `BELONGS_TO` does not exist in database `neo4j`. Verify that the spelling is correct.', position=<SummaryInputPosition line=1, column=20, offset=19>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 19, 'line': 1, 'column': 20}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'MATCH (m:Module)-[:BELONGS_TO]->(r:Repository) RETURN m.name AS mod, r.name AS repo'
+INFO:     127.0.0.1:38416 - "GET /api/tree HTTP/1.1" 200 OK
+INFO:     connection closed
