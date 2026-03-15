@@ -192,7 +192,7 @@ export default function Home() {
 
 
   const connectAgentSocket = () => {
-    const wsUrl = API_URL.replace("http", "ws") + "/ws/agent_agent";
+    const wsUrl = API_URL.replace("http", "ws") + "/ws/agent_system";
     if (socketRef.current?.readyState === WebSocket.OPEN || socketRef.current?.readyState === WebSocket.CONNECTING) {
       return;
     }

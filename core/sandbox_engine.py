@@ -3,7 +3,7 @@ import shutil
 import tempfile
 import subprocess
 from typing import Tuple, Dict, Any
-from core.patch_engine import apply_patch as raw_apply_patch
+from core.refactor_engine import apply_patch as raw_apply_patch
 
 class SandboxEngine:
     """

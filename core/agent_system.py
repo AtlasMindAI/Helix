@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # State Definition
-class CellularState(TypedDict):
+class SystemState(TypedDict):
     messages: List[BaseMessage]
     identified_node: str
     vulnerability: str
@@ -52,7 +52,7 @@ def get_code_for_node(node_name: str) -> tuple[str | None, str | None]:
         return file_path, None
 
 # --- Agent 1: Pathogen Hunter ---
-async def pathogen_hunter(state: CellularState):
+async def vulnerability_scanner(state: SystemState):
     """
     SOTA: PageRank-Driven Anomaly Detection
     Research: "Fuzzing Based on Function Importance by Attributed Call Graph"
@@ -96,7 +96,7 @@ async def pathogen_hunter(state: CellularState):
              f"File: {file_path}\n\n" \
              f"SYNAPTIC NEIGHBORHOOD:\n{neighborhood_context}\n\n" \
              f"CODE:\n```python\n{code_content}\n```\n\n" \
-             f"Identify one specific issue (logic pathogen or bottleneck) that should be resolved."
+             f"Identify one specific issue (logic vulnerability or bottleneck) that should be resolved."
              
     response = await llm.ainvoke([
         SystemMessage(content="You are a Pathogen Hunter AI. You find real issues in code by considering both the logic and its structural position in the graph."), 
@@ -110,7 +110,7 @@ async def pathogen_hunter(state: CellularState):
     }
 
 # --- Agent 2: T-Cell Healer ---
-async def t_cell_healer(state: CellularState):
+async def auto_patcher(state: SystemState):
     """
     SOTA: Autonomous Healing Agents
     Research: "RepairAgent: An Autonomous, LLM-Based Agent for Program Repair" (ICSE 2025)
@@ -130,7 +130,7 @@ async def t_cell_healer(state: CellularState):
 
     try:
         # 2. Ask LLM for a 'Patch Proposal'
-        prompt = f"HEALING PROTOCOL\nTarget: {target}\nPathogen: {vulnerability}\n\nCurrent DNA (Code):\n```python\n{code_content}\n```\n\nTask: Propose a 'Code Patch' (optimized code) that resolves the pathogen and improves architectural stability. ONLY return the new code block within markdown code fences."
+        prompt = f"HEALING PROTOCOL\nTarget: {target}\nPathogen: {vulnerability}\n\nCurrent DNA (Code):\n```python\n{code_content}\n```\n\nTask: Propose a 'Code Patch' (optimized code) that resolves the vulnerability and improves architectural stability. ONLY return the new code block within markdown code fences."
         
         response = await llm.ainvoke([
             SystemMessage(content="You are a T-Cell Healer AI. You surgically repair code."), 
@@ -146,25 +146,25 @@ async def t_cell_healer(state: CellularState):
     except Exception as e:
         return {"logs": state["logs"] + [log, f"❌ Error during healing: {str(e)}"]}
 
-def create_agent_swarm():
+def create_agent_system():
     """
     SOTA: Artificial Agent System (AIS) Orchestration
     Research: "DCW-RNN: Improving Vulnerability Detection Using AIS" (IEEE)
     Validation: Orchestrates agents as a Dendritic Cell Algorithm (DCA) to detect 
     complex dependencies in vulnerable object-oriented software metrics.
     """
-    workflow = StateGraph(CellularState)
+    workflow = StateGraph(SystemState)
     
-    workflow.add_node("pathogen_hunter", pathogen_hunter)
-    workflow.add_node("t_cell_healer", t_cell_healer)
+    workflow.add_node("vulnerability_scanner", vulnerability_scanner)
+    workflow.add_node("auto_patcher", auto_patcher)
     
-    workflow.add_edge(START, "pathogen_hunter")
-    workflow.add_edge("pathogen_hunter", "t_cell_healer")
-    workflow.add_edge("t_cell_healer", END)
+    workflow.add_edge(START, "vulnerability_scanner")
+    workflow.add_edge("vulnerability_scanner", "auto_patcher")
+    workflow.add_edge("auto_patcher", END)
     
     return workflow.compile()
 
-agent_swarm = create_agent_swarm()
+agent_system = create_agent_system()
 
 if __name__ == "__main__":
     # Test run
@@ -179,7 +179,7 @@ if __name__ == "__main__":
     }
     
     print("🚀 Deploying Agent System...")
-    final_state = agent_swarm.invoke(initial_state)
+    final_state = agent_system.invoke(initial_state)
     for log in final_state["logs"]:
         print(log)
     if final_state["optimization_proposal"]:

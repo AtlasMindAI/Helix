@@ -36,7 +36,7 @@ load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file_
 from core import Embedder, GraphMemory, VectorMemory
 from core.agent import query_agent
 from core.harvester import fetch_and_index_repo
-from core.agent_agent_system import agent_agent_system
+from core.agent_system import agent_system
 from core.refactor_engine import apply_patch
 from core.shadow_engine import generate_shadow_doc
 from core.sync_engine import run_helix_sync_sequence
@@ -189,7 +189,7 @@ async def run_agent_system_autonomous() -> None:
         """
         final_state = build_agent_system_state()
         
-        async for output in agent_agent_system.astream(final_state):
+        async for output in agent_system.astream(final_state):
             for node_name, delta in output.items():
                 if "logs" in delta:
                     for log in delta["logs"]:
@@ -847,7 +847,7 @@ async def analyze_vision(path: str, query: str = "Analyze the visual health and 
     """
     return await vision.analyze_visual_health(path, query)
 
-@app.websocket("/ws/agent_agent_system")
+@app.websocket("/ws/agent_system")
 async def websocket_endpoint(websocket: WebSocket):
     global latest_autoFix_proposal
     await agent_system_manager.connect(websocket)
@@ -894,7 +894,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     log_index = len(new_logs)
 
                 # Process AgentSystem (Async Streaming)
-                async for output in agent_agent_system.astream(state):
+                async for output in agent_system.astream(state):
                     # output is a dict of {node_name: state_delta}
                     for _, delta in output.items():
                         if "logs" in delta:
