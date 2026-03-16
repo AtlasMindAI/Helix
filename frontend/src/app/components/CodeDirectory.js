@@ -63,13 +63,13 @@ export default function CodeDirectory({ onNodeSelect }) {
         };
     };
 
-    const renderNode = (node, depth = 0) => {
+    const renderNode = (node, depth = 0, index = 0) => {
         const hasChildren = node.children && node.children.length > 0;
         const isExpanded = expandedNodes[node.id];
         const isHighAuthority = node.pagerank > 0.1;
 
         return (
-            <div key={node.id} className="w-full">
+            <div key={`${node.id}-${depth}-${index}`} className="w-full">
                 <div
                     className={`flex items-center hover:bg-elevated cursor-pointer py-1.5 px-2 rounded-md transition-all group ${depth === 0 ? "mt-1" : ""} ${isHighAuthority ? "border-l-2 border-neon-cyan/30" : ""}`}
                     style={{
@@ -130,7 +130,7 @@ export default function CodeDirectory({ onNodeSelect }) {
                 {/* Children */}
                 {hasChildren && isExpanded && (
                     <div className="border-l border-surface-border ml-4 mt-0.5 mb-1 animate-fade-in">
-                        {node.children.map(child => renderNode(child, depth + 1))}
+                        {node.children.map((child, i) => renderNode(child, depth + 1, i))}
                     </div>
                 )}
             </div>
@@ -165,7 +165,7 @@ export default function CodeDirectory({ onNodeSelect }) {
                 <p className="text-muted text-[10px] tracking-wider mt-1">Hierarchical Tree View</p>
             </div>
             <div className="flex flex-col">
-                {treeData.map(node => renderNode(node, 0))}
+                {treeData.map((node, i) => renderNode(node, 0, i))}
             </div>
         </div>
     );

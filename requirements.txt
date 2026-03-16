@@ -1,6 +1,6 @@
 neo4j
 qdrant-client
-google-genai
+google-generativeai
 python-dotenv
 fastapi
 uvicorn
@@ -15,3 +15,4 @@ networkx
 python-louvain
 langgraph
 cohere
+playwright

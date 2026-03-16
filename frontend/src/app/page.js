@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import GraphVisualizer from "./components/GraphVisualizer";
-import HierarchicalGraph from "./components/HierarchicalGraph";
+import CellularGraph from "./components/CellularGraph";
 import ChatPanel from "./components/ChatPanel";
 import RepoRootNode from "./components/RepoRootNode";
 import CodeDirectory from "./components/CodeDirectory";
@@ -22,19 +22,19 @@ export default function Home() {
   const [searchResults, setSearchResults] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [viewMode, setViewMode] = useState("graph"); // "graph" | "hierarchical" | "directory"
+  const [viewMode, setViewMode] = useState("graph"); // "graph" | "cellular" | "directory"
   const [graphMode, setGraphMode] = useState("macro"); // "macro" | "deep"
   const [umlCode, setUmlCode] = useState(null);
   const [generatingUml, setGeneratingUml] = useState(false);
-  const [hierarchicalData, setHierarchicalData] = useState(null);
+  const [cellularData, setCellularData] = useState(null);
   const [highlightNodes, setHighlightNodes] = useState([]);
   const [interrogating, setInterrogating] = useState(false);
   const [currentTimestamp, setCurrentTimestamp] = useState(Date.now() / 1000);
   const [timeRange, setTimeRange] = useState({ min: 0, max: Date.now() / 1000 });
-  const [agentLogs, setAgentLogs] = useState([]);
-  const [autoFixProposal, setCrisprProposal] = useState(null);
-  const [agentActive, setAgentActive] = useState(false);
-  const [agentConnected, setAgentConnected] = useState(false);
+  const [swarmLogs, setSwarmLogs] = useState([]);
+  const [crisprProposal, setCrisprProposal] = useState(null);
+  const [swarmActive, setSwarmActive] = useState(false);
+  const [swarmConnected, setSwarmConnected] = useState(false);
   const [autoEvolve, setAutoEvolve] = useState(false);
   const [showCode, setShowCode] = useState(false);
   const [showUml, setShowUml] = useState(false);
@@ -59,9 +59,9 @@ export default function Home() {
   const socketRef = useRef(null);
   const autoEvolveRef = useRef(false);
   const reconnectTimerRef = useRef(null);
-  const pendingAgentRef = useRef(false);
+  const pendingSwarmRef = useRef(false);
   const lastSelectionRef = useRef(null);
-  const lastAgentCountRef = useRef(0);
+  const lastSwarmCountRef = useRef(0);
 
 
   // Refactored data fetching — now supports macro/deep graph modes
@@ -111,12 +111,12 @@ export default function Home() {
     }
   };
 
-  // Fetch hierarchical data
+  // Fetch cellular data
   const fetchCellularData = () => {
-    fetch(`${API_URL}/api/v1/graph/hierarchical`)
+    fetch(`${API_URL}/api/v1/graph/cellular`)
       .then((r) => r.json())
-      .then((data) => setHierarchicalData(data))
-      .catch((e) => console.error("Failed to fetch hierarchical data", e));
+      .then((data) => setCellularData(data))
+      .catch((e) => console.error("Failed to fetch cellular data", e));
   };
 
   const fetchNodeHistory = (filePath) => {
@@ -175,24 +175,24 @@ export default function Home() {
   useEffect(() => {
     const selectionName = selectedNode?.name || null;
     const selectionChanged = selectionName !== lastSelectionRef.current;
-    const agentSignal = agentActive || Boolean(autoFixProposal);
+    const swarmSignal = swarmActive || Boolean(crisprProposal);
 
-    if (selectionChanged || agentSignal) {
+    if (selectionChanged || swarmSignal) {
       setAnalysisDismissed(false);
     }
 
-    if (!analysisDismissed && (selectionChanged || agentSignal)) {
-      if (selectedNode || agentSignal) {
+    if (!analysisDismissed && (selectionChanged || swarmSignal)) {
+      if (selectedNode || swarmSignal) {
         setAnalysisOpen(true);
       }
     }
 
     lastSelectionRef.current = selectionName;
-  }, [selectedNode, agentActive, autoFixProposal, analysisDismissed]);
+  }, [selectedNode, swarmActive, crisprProposal, analysisDismissed]);
 
 
-  const connectAgentSocket = () => {
-    const wsUrl = API_URL.replace("http", "ws") + "/ws/agent_system";
+  const connectSwarmSocket = () => {
+    const wsUrl = API_URL.replace("http", "ws") + "/ws/immune_swarm";
     if (socketRef.current?.readyState === WebSocket.OPEN || socketRef.current?.readyState === WebSocket.CONNECTING) {
       return;
     }
@@ -200,30 +200,30 @@ export default function Home() {
     const socket = new WebSocket(wsUrl);
 
     socket.onopen = () => {
-      console.log("Connected to Agent System WebSocket");
-      setAgentConnected(true);
-      setAgentLogs(prev => [...prev, "✅ Agent link online."].slice(-50));
-      if (pendingAgentRef.current) {
-        pendingAgentRef.current = false;
+      console.log("Connected to Immune Swarm WebSocket");
+      setSwarmConnected(true);
+      setSwarmLogs(prev => [...prev, "✅ Swarm link online."].slice(-50));
+      if (pendingSwarmRef.current) {
+        pendingSwarmRef.current = false;
         socket.send(JSON.stringify({ command: "DEPLOY_SWARM" }));
-        setAgentActive(true);
+        setSwarmActive(true);
       }
     };
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if (data.type === "LOG") {
-        setAgentLogs(prev => [...prev, data.message].slice(-50)); // Keep last 50 logs
+        setSwarmLogs(prev => [...prev, data.message].slice(-50)); // Keep last 50 logs
       } else if (data.type === "CRISPR_PROPOSAL") {
         if (autoEvolveRef.current) {
-          setAgentLogs((prev) =>
-            [...prev, "⚡ Auto-Evolve override: applying patch..."].slice(-50)
+          setSwarmLogs((prev) =>
+            [...prev, "⚡ Auto-Evolve override: applying mutation..."].slice(-50)
           );
-          acceptPatch(data);
+          acceptMutation(data);
         } else {
           setCrisprProposal(data);
         }
-        setAgentActive(false);
+        setSwarmActive(false);
       } else if (data.type === "SHADOW_VERIFY") {
         setShadowNodes(prev => {
           const next = new Set(prev);
@@ -234,46 +234,32 @@ export default function Home() {
           }
           return next;
         });
-      } else if (data.type === "INGESTION_COMPLETE") {
-        // Broadcasted from backend when ingestion finishes
-        setAgentLogs(prev => [...prev, `✅ Repository digested: ${data.repo_url}`].slice(-50));
-        fetchGraphData();
-        fetchCellularData();
-        // Dispatch a custom event so RepoRootNode can update its status
-        if (typeof window !== "undefined") {
-          window.dispatchEvent(new CustomEvent("helix_ingestion_complete", { detail: data.repo_url }));
-        }
-      } else if (data.type === "INGESTION_FAILED") {
-        setAgentLogs(prev => [...prev, `❌ Ingestion failed: ${data.error}`].slice(-50));
-        if (typeof window !== "undefined") {
-          window.dispatchEvent(new CustomEvent("helix_ingestion_failed", { detail: data.error }));
-        }
       }
     };
 
     socket.onclose = () => {
-      console.log("Disconnected from Agent System WebSocket");
-      setAgentConnected(false);
-      setAgentLogs(prev => [...prev, "⚠️ Agent link lost. Reconnecting..."].slice(-50));
+      console.log("Disconnected from Immune Swarm WebSocket");
+      setSwarmConnected(false);
+      setSwarmLogs(prev => [...prev, "⚠️ Swarm link lost. Reconnecting..."].slice(-50));
       if (reconnectTimerRef.current) {
         clearTimeout(reconnectTimerRef.current);
       }
       reconnectTimerRef.current = setTimeout(() => {
-        connectAgentSocket();
+        connectSwarmSocket();
       }, 1500);
     };
 
     socket.onerror = () => {
-      setAgentConnected(false);
+      setSwarmConnected(false);
       socket.close();
     };
 
     socketRef.current = socket;
   };
 
-  // Initialize WebSocket for Agent
+  // Initialize WebSocket for Swarm
   useEffect(() => {
-    connectAgentSocket();
+    connectSwarmSocket();
     fetchGraphData(graphMode);
     fetchCellularData();
 
@@ -318,21 +304,21 @@ export default function Home() {
     }
   };
 
-  // Interrogation (agent-powered search for hierarchical view)
-  const deployAgent = () => {
+  // Interrogation (agent-powered search for cellular view)
+  const deploySwarm = () => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
-      setAgentActive(true);
-      setAgentLogs([]);
+      setSwarmActive(true);
+      setSwarmLogs([]);
       setCrisprProposal(null);
       socketRef.current.send(JSON.stringify({ command: "DEPLOY_SWARM" }));
       return;
     }
 
-    pendingAgentRef.current = true;
-    setAgentLogs(prev => [...prev, "⚠️ Agent reconnecting... deploying on connect.", "ℹ️ Check API server and WebSocket endpoint if this persists."]);
+    pendingSwarmRef.current = true;
+    setSwarmLogs(prev => [...prev, "⚠️ Swarm reconnecting... deploying on connect.", "ℹ️ Check API server and WebSocket endpoint if this persists."]);
     setAnalysisOpen(true);
     setAnalysisDismissed(false);
-    connectAgentSocket();
+    connectSwarmSocket();
   };
 
   const guideDiagram = `
@@ -342,10 +328,10 @@ flowchart TD
   C --> D[Neural Link: Ask Questions]
   C --> E[Select Node → Analysis]
   E --> F[Shadow Doc / UML]
-  C --> G[Deploy Agent System]
+  C --> G[Deploy Immune Swarm]
   G --> H[Review Proposal]
   H --> I{Auto-Evolve?}
-  I -->|Yes| J[Apply Patch]
+  I -->|Yes| J[Apply Mutation]
   I -->|No| K[Accept / Reject]
   J --> L[Re-index & Observe]
   K --> L
@@ -370,41 +356,41 @@ flowchart TD
     setOnboarded(true);
   };
 
-  const verifyPatch = async () => {
-    if (!autoFixProposal) return;
-    setAgentLogs(prev => [...prev, `🛡️ Sandbox: Initiating isolated staging for ${autoFixProposal.node}...`]);
+  const verifyMutation = async () => {
+    if (!crisprProposal) return;
+    setSwarmLogs(prev => [...prev, `🛡️ Sandbox: Initiating isolated staging for ${crisprProposal.node}...`]);
     try {
-      const res = await fetch(`${API_URL}/api/verify_patch`, {
+      const res = await fetch(`${API_URL}/api/verify_mutation`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          node: autoFixProposal.node,
-          proposal: autoFixProposal.proposal,
-          file_path: autoFixProposal.file_path
+          node: crisprProposal.node,
+          proposal: crisprProposal.proposal,
+          file_path: crisprProposal.file_path
         })
       });
       const data = await res.json();
       if (data.success) {
-        setAgentLogs(prev => [...prev, "✅ Sandbox: Verification successful. Metrics: " + data.stability_score]);
+        setSwarmLogs(prev => [...prev, "✅ Sandbox: Verification successful. Metrics: " + data.stability_score]);
       } else {
-        setAgentLogs(prev => [...prev, "❌ Sandbox: Verification failed."]);
+        setSwarmLogs(prev => [...prev, "❌ Sandbox: Verification failed."]);
       }
     } catch (err) {
-      setAgentLogs(prev => [...prev, "❌ Sandbox: Error during staging."]);
+      setSwarmLogs(prev => [...prev, "❌ Sandbox: Error during staging."]);
     }
   };
 
   const handleVisualDiagnostic = () => {
     setCapturingVision(true);
     setVisionResult(null);
-    setAgentLogs(prev => [...prev, "👁️ Vision: Initiating high-fidelity UI phenotype capture..."].slice(-50));
+    setSwarmLogs(prev => [...prev, "👁️ Vision: Initiating high-fidelity UI phenotype capture..."].slice(-50));
 
     // 1. Capture UI
     fetch(`${API_URL}/api/vision/capture?url=${encodeURIComponent(window.location.origin)}`)
       .then(r => r.json())
       .then(data => {
         if (data.status === "success") {
-          setAgentLogs(prev => [...prev, "🧬 Vision: Snapshot secured. Sequencing visual DNA..."].slice(-50));
+          setSwarmLogs(prev => [...prev, "🧬 Vision: Snapshot secured. Sequencing visual DNA..."].slice(-50));
           // 2. Analyze Vision
           return fetch(`${API_URL}/api/vision/analyze?path=${encodeURIComponent(data.path)}`);
         }
@@ -414,23 +400,23 @@ flowchart TD
       .then(result => {
         setVisionResult(result);
         setCapturingVision(false);
-        setAgentLogs(prev => [...prev, "✅ Vision: Diagnostic complete. Visual health score: " + result.score].slice(-50));
+        setSwarmLogs(prev => [...prev, "✅ Vision: Diagnostic complete. Visual health score: " + result.score].slice(-50));
         setAnalysisOpen(true); // Open analysis panel to show results
       })
       .catch(e => {
         console.error("Vision diagnostic error", e);
         setCapturingVision(false);
-        setAgentLogs(prev => [...prev, "❌ Vision: Diagnostic scan failed."].slice(-50));
+        setSwarmLogs(prev => [...prev, "❌ Vision: Diagnostic scan failed."].slice(-50));
       });
   };
 
-  const acceptPatch = async (proposalOverride) => {
-    const proposal = proposalOverride || autoFixProposal;
+  const acceptMutation = async (proposalOverride) => {
+    const proposal = proposalOverride || crisprProposal;
     if (!proposal) return;
-    setAgentLogs(prev => [...prev, "🧬 AutoFix: Patch starting..."]);
-    // Phase 3: AutoFix Implementation will go here
+    setSwarmLogs(prev => [...prev, "🧬 CRISPR: Mutation starting..."]);
+    // Phase 3: CRISPR Implementation will go here
     try {
-      const res = await fetch(`${API_URL}/api/accept_patch`, {
+      const res = await fetch(`${API_URL}/api/accept_mutation`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -441,14 +427,14 @@ flowchart TD
       });
       const data = await res.json();
       if (data.success) {
-        setAgentLogs(prev => [...prev, "✅ Patch Physical: Code successfully re-spliced."]);
+        setSwarmLogs(prev => [...prev, "✅ Mutation Physical: Code successfully re-spliced."]);
         setCrisprProposal(null);
         fetchGraphData();
       } else {
-        setAgentLogs(prev => [...prev, `❌ Patch Rejected: ${data.message || "Validation failed."}`]);
+        setSwarmLogs(prev => [...prev, `❌ Mutation Rejected: ${data.message || "Validation failed."}`]);
       }
     } catch (err) {
-      setAgentLogs(prev => [...prev, "❌ Patch Failed: Splicing error."]);
+      setSwarmLogs(prev => [...prev, "❌ Mutation Failed: Splicing error."]);
     }
   };
 
@@ -535,9 +521,9 @@ flowchart TD
   };
 
 
-  // Semantic search (uses interrogation in hierarchical view)
+  // Semantic search (uses interrogation in cellular view)
   const handleSearch = async (e) => {
-    if (viewMode === "hierarchical") {
+    if (viewMode === "cellular") {
       return handleInterrogate(e);
     }
     e.preventDefault();
@@ -670,7 +656,7 @@ flowchart TD
                 </div>
               ))
             ) : (
-              <p className="text-muted text-[10px] italic">No historical patchs found.</p>
+              <p className="text-muted text-[10px] italic">No historical mutations found.</p>
             )}
           </div>
         </div>
@@ -740,10 +726,10 @@ flowchart TD
       done: Boolean(selectedNode) || highlightNodes.length > 0,
     },
     {
-      id: "agent",
-      label: "Agent",
-      description: "Deploy the Agent System for analysis.",
-      done: agentLogs.length > 0 || agentActive,
+      id: "swarm",
+      label: "Swarm",
+      description: "Deploy the Immune Swarm for analysis.",
+      done: swarmLogs.length > 0 || swarmActive,
     },
   ];
 
@@ -760,61 +746,18 @@ flowchart TD
     links: [],
   };
 
-  const agentDockDesc = agentConnected
+  const swarmDockDesc = swarmConnected
     ? "Deploy autonomous healing"
-    : "Agent offline — start API server";
+    : "Swarm offline — start API server";
 
   return (
-    <main className="flex h-screen w-screen overflow-hidden bg-[#05080f] text-white font-sans">
-
-      {/* ── Left Sidebar: Navigation & Controls ── */}
-      {showDock && (
-        <aside className="w-72 h-full border-r border-[#1a2332] bg-[#0a0f14]/80 backdrop-blur flex flex-col z-40 shrink-0">
-          <div className="flex-1 overflow-y-auto custom-scrollbar p-4">
-            <Sidebar
-              stats={stats}
-              graphMode={graphMode}
-              onGraphModeChange={handleGraphModeChange}
-              onSettingsClick={() => setSettingsOpen(true)}
-              onGuideClick={() => setGuideOpen(true)}
-            />
-          </div>
-          <div className="h-1/3 border-t border-[#1a2332] overflow-hidden">
-            <CodeDirectory
-              onNodeSelect={(node) => {
-                if (node.action === 'NAVIGATE') {
-                  setViewMode("graph");
-                  setSelectedNode(node);
-                  loadFileContent(node);
-                } else {
-                  setSelectedNode(node);
-                  setUmlCode(null);
-                  loadFileContent(node);
-                }
-              }}
-            />
-          </div>
-        </aside>
-      )}
-
-      {/* ── Center Stage: Main Visualization ── */}
-      <section className="flex-1 relative h-full flex flex-col min-w-0">
-        <div className="absolute top-4 left-4 z-50 pointer-events-none">
-          {stats && (
-            <div className="flex bg-[#0a0f14]/80 backdrop-blur border border-white/10 rounded-full px-4 py-2 gap-4 shadow-lg pointer-events-auto">
-              <div className="text-xs font-mono"><span className="text-muted mr-2">NODES:</span><span className="text-neon-cyan">{stats.graph?.nodes || 0}</span></div>
-              <div className="w-px bg-white/10" />
-              <div className="text-xs font-mono"><span className="text-muted mr-2">EDGES:</span><span className="text-neon-emerald">{stats.graph?.relationships || 0}</span></div>
-              <div className="w-px bg-white/10" />
-              <div className="text-xs font-mono"><span className="text-muted mr-2">VECTORS:</span><span className="text-neon-purple">{stats.vectors?.points_count || 0}</span></div>
-            </div>
-          )}
-        </div>
-
-        {viewMode === "hierarchical" && hierarchicalData && (
-          <div className="absolute inset-0 animate-fade-in bg-[radial-gradient(circle_at_center,_transparent_0%,_#05080f_100%)]">
-            <HierarchicalGraph
-              data={hierarchicalData}
+    <main className="helix-layout">
+      {/* ── Main Stage (Graph/Cellular/Directory) ── */}
+      <section className="helix-stage">
+        {viewMode === "cellular" && cellularData && (
+          <div className="absolute inset-0 animate-fade-in">
+            <CellularGraph
+              data={cellularData}
               highlightNodes={highlightNodes}
               onNodeClick={(node) => {
                 setSelectedNode(node);
@@ -826,7 +769,7 @@ flowchart TD
         )}
 
         {viewMode === "graph" && (graphData || isOnboarding) && (
-          <div className={`absolute inset-0 animate-fade-in ${seedActive ? "opacity-30" : ""}`}>
+          <div className={`absolute inset-0 animate-fade-in helix-graph-layer ${seedActive ? "helix-graph-layer--onboarding" : ""}`}>
             <GraphVisualizer
               graphData={graphData || seedGraphData}
               focusedNode={selectedNode?.name}
@@ -844,13 +787,12 @@ flowchart TD
                 loadFileContent(node);
               }}
             />
-
             {graphMode === "temporal" && (
-              <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[60%] z-50">
-                <div className="bg-[#0a0f14]/80 backdrop-blur border border-neon-cyan/30 rounded-2xl p-4 shadow-[0_0_30px_rgba(0,229,255,0.1)] flex flex-col items-center gap-3">
+              <div className="absolute bottom-24 left-1/2 -translate-x-1/2 w-[60%] z-50">
+                <div className="helix-panel p-5 flex flex-col items-center gap-3">
                   <div className="flex justify-between w-full text-[10px] uppercase tracking-widest font-bold">
                     <span className="text-muted">{new Date(timeRange.min * 1000).toLocaleDateString()}</span>
-                    <span className="text-neon-cyan drop-shadow-[0_0_8px_rgba(0,229,255,0.5)]">Evolutionary State: {new Date(currentTimestamp * 1000).toLocaleString()}</span>
+                    <span className="text-neon-cyan">Evolutionary State: {new Date(currentTimestamp * 1000).toLocaleString()}</span>
                     <span className="text-muted">{new Date(timeRange.max * 1000).toLocaleDateString()}</span>
                   </div>
                   <input
@@ -860,7 +802,7 @@ flowchart TD
                     step={1}
                     value={currentTimestamp}
                     onChange={(e) => setCurrentTimestamp(Number(e.target.value))}
-                    className="w-full cursor-pointer accent-neon-cyan bg-[#141a33] h-1.5 rounded-full appearance-none outline-none"
+                    className="w-full cursor-pointer accent-neon-cyan bg-[#141a33] h-1 rounded-full appearance-none"
                   />
                   <p className="text-[9px] text-secondary uppercase tracking-[0.2em]">Scrub timeline to watch the organism evolve</p>
                 </div>
@@ -869,12 +811,45 @@ flowchart TD
           </div>
         )}
 
-        {/* Loading Overlay */}
+        {showDock && (
+          <aside className={`helix-wing-left ${sidebarOpen ? "is-open" : "is-collapsed"}`}>
+            <div className="helix-wing-toggle">
+              <button
+                className="helix-icon-button"
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                title={sidebarOpen ? "Collapse Directory" : "Expand Directory"}
+              >
+                {sidebarOpen ? "⇠" : "🧬"}
+              </button>
+            </div>
+            <div className="helix-wing-content h-full flex flex-col">
+              <div className="h-full helix-panel overflow-hidden">
+                <CodeDirectory
+                  onNodeSelect={(node) => {
+                    if (node.action === 'NAVIGATE') {
+                      setViewMode("graph");
+                      setSelectedNode(node);
+                      loadFileContent(node);
+                    } else {
+                      setSelectedNode(node);
+                      setUmlCode(null);
+                      loadFileContent(node);
+                    }
+                  }}
+                />
+              </div>
+            </div>
+          </aside>
+        )}
+
+        {/* Overlays (Loading/Error/Search Results) */}
         {loading && (
-          <div className="absolute inset-0 flex items-center justify-center z-50 bg-[#05080f]/90 backdrop-blur-md">
-            <div className="flex flex-col items-center">
-              <div className="text-5xl mb-6 animate-pulse-glow drop-shadow-[0_0_15px_rgba(0,229,255,0.4)]">⬡</div>
-              <h2 className="text-neon-cyan text-xl tracking-widest font-bold uppercase animate-pulse">Initializing Neural Map</h2>
+          <div className="absolute inset-0 flex items-center justify-center z-50 bg-[#050510]/80 backdrop-blur-sm">
+            <div className="text-center animate-slide-up">
+              <div className="text-5xl mb-6 animate-pulse-glow drop-shadow-[0_0_15px_rgba(0,229,255,0.4)]">🧬</div>
+              <h2 className="text-neon-cyan text-xl font-bold tracking-widest uppercase">
+                Initializing Neural Map
+              </h2>
               <div className="mt-4 flex flex-col items-center gap-2">
                 <div className="w-48 h-1 bg-[#141a33] rounded-full overflow-hidden">
                   <div className="h-full bg-neon-cyan animate-[loading_2s_infinite]"></div>
@@ -887,249 +862,544 @@ flowchart TD
           </div>
         )}
 
-        {/* Error Overlay */}
         {error && (
-          <div className="absolute inset-0 flex items-center justify-center z-50 bg-[#05080f]/80 backdrop-blur-md">
-            <div className="bg-[#0a0f14] p-8 max-w-md w-full border border-neon-pink/30 rounded-2xl shadow-[0_0_50px_rgba(255,0,102,0.1)] flex flex-col gap-4 text-center">
-              <span className="text-4xl text-neon-pink">🚨</span>
-              <h2 className="text-neon-pink tracking-widest uppercase font-bold text-lg">System Error</h2>
-              <p className="text-sm text-gray-400 bg-red-900/10 p-3 rounded-lg border border-neon-pink/10">{error}</p>
-              <button onClick={fetchGraphData} className="mt-4 w-full bg-neon-pink/10 hover:bg-neon-pink/20 text-neon-pink border border-neon-pink/50 py-2 rounded-lg transition-colors text-xs tracking-widest uppercase font-bold">
+          <div className="absolute inset-0 flex items-center justify-center z-50 bg-[#050510]/80 backdrop-blur-sm">
+            <div className="helix-panel p-8 max-w-md text-center border-t-2 border-neon-pink">
+              <div className="text-4xl mb-4">🚨</div>
+              <h2 className="text-neon-pink text-lg font-bold uppercase tracking-widest mb-2">
+                Neural Link Severed
+              </h2>
+              <p className="text-secondary text-sm mb-6 leading-relaxed bg-[#1a0f1e] p-3 rounded-lg border border-neon-pink/20">
+                {error}
+              </p>
+              <div className="text-left space-y-2 mb-6">
+                <p className="text-muted text-[10px] uppercase tracking-widest">Diagnostic Steps:</p>
+                <div className="text-[11px] font-mono text-gray-400 space-y-1">
+                  <p>1. Ensure Neo4j & Qdrant are active</p>
+                  <p>2. Verify API server: <span className="text-neon-emerald">python api/server.py</span></p>
+                  <p>3. Check .env configuration</p>
+                </div>
+              </div>
+              <button
+                onClick={() => fetchGraphData()}
+                className="helix-button-secondary helix-button-secondary--pink w-full"
+              >
                 Attempt Re-Link
               </button>
             </div>
           </div>
         )}
-
-        {/* Floating Guide overlay */}
-        {seedActive && !loading && !error && (
-          <div className="absolute bottom-10 left-10 z-50 w-80 bg-[#0a0f14]/80 backdrop-blur border border-white/10 rounded-2xl p-6 shadow-xl text-center flex flex-col items-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-neon-cyan/20 flex items-center justify-center border border-neon-cyan/30 text-2xl shadow-[0_0_20px_rgba(0,229,255,0.2)]">⬡</div>
-            <h3 className="text-neon-cyan font-bold tracking-widest uppercase text-sm">Initiate System</h3>
-            <p className="text-xs text-gray-400 leading-relaxed">Begin with ingestion to map the project architecture.</p>
-            <div className="flex gap-2 w-full mt-2">
-              <button className="flex-1 bg-neon-cyan text-[#05080f] font-bold text-[10px] uppercase tracking-widest py-2 rounded hover:bg-[#00b8cc] transition-colors" onClick={() => setGuideOpen(true)}>Start Ingestion</button>
-            </div>
-          </div>
-        )}
       </section>
 
-      {/* ── Right Sidebar: Context & Actions ── */}
-      {showDock && (
-        <aside className="w-[400px] h-full border-l border-[#1a2332] bg-[#0a0f14]/90 backdrop-blur z-40 flex flex-col shrink-0">
-
-          {/* Top Panel: Agent Chat / Agent Log */}
-          <div className="flex-1 border-b border-[#1a2332] overflow-hidden flex flex-col relative">
-            <ChatPanel
-              onChatResponse={handleChatResponse}
-              onDeployAgent={deployAgent}
-              agentActive={agentActive}
-              agentConnected={agentConnected}
-              agentLogs={agentLogs}
-              crisprProposal={autoFixProposal}
-            />
-
-            {/* Agent Monologue overlay inside chat area */}
-            {(agentActive || agentLogs.length > 0) && (
-              <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t ${agentActive ? 'from-black/90 to-transparent' : 'from-[#05080f]/90 to-transparent'} pointer-events-none p-4 flex flex-col justify-end max-h-[150px]`}>
-                <div className="pointer-events-auto bg-black/60 backdrop-blur-md border border-neon-cyan/20 p-3 rounded-xl max-h-[120px] overflow-y-auto custom-scrollbar shadow-[0_0_20px_rgba(0,229,255,0.05)]">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <span className={`w-1.5 h-1.5 rounded-full ${agentActive ? 'bg-neon-cyan animate-ping' : 'bg-gray-500'}`}></span>
-                      <span className={`text-[9px] uppercase tracking-widest font-bold ${agentActive ? 'text-neon-cyan' : 'text-gray-400'}`}>Agent System</span>
-                    </div>
-                    <button onClick={() => setAgentLogs([])} className="text-muted hover:text-white text-xs">✕</button>
-                  </div>
-                  <div className="space-y-1 font-mono text-[10px] text-gray-300">
-                    {agentLogs.slice(-5).map((log, i) => (
-                      <div key={i} className={`border-l pl-2 py-0.5 ${log.startsWith('❌') ? 'border-neon-pink text-neon-pink' : log.startsWith('✅') ? 'border-neon-emerald text-neon-emerald' : 'border-neon-cyan/30'}`}>{log}</div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
+      {seedActive && !loading && !error && (
+        <div className={`helix-seed-overlay ${onboardingTransition ? "is-exiting" : ""}`}>
+          <div className="helix-seed-card">
+            <button
+              className="helix-seed-node"
+              onClick={() => {
+                setGuideOpen(true);
+              }}
+              aria-label="Initiate Helix"
+            >
+              <span className="helix-seed-core"></span>
+              <span className="helix-seed-label">Initiate Helix</span>
+            </button>
+            <p className="helix-seed-text">
+              Begin with ingestion to grow the organism. The flow guide will open your next steps.
+            </p>
+            <div className="helix-seed-actions">
+              <button className="helix-button-primary" onClick={beginGuide}>
+                Start With Ingestion
+              </button>
+              <button className="helix-button-secondary" onClick={() => setGuideOpen(true)}>
+                Open Flow Guide
+              </button>
+            </div>
           </div>
-
-          {/* Bottom Panel: Node Details / Interrogation Info */}
-          <div className="h-[45%] overflow-y-auto custom-scrollbar p-0 bg-[#05080f]">
-            {selectedNode ? (
-              renderInfoPanel()
-            ) : (
-              <div className="flex flex-col items-center justify-center h-full text-secondary opacity-30 space-y-4 p-8">
-                <span className="text-4xl text-gray-700">⬡</span>
-                <p className="text-xs font-mono tracking-widest uppercase text-center leading-relaxed">
-                  Awaiting Entity Selection <br />
-                  <span className="text-[10px] text-gray-600">Select a node to inspect architecture</span>
-                </p>
-              </div>
-            )}
-          </div>
-        </aside>
+        </div>
       )}
 
-      {/* ── AutoFix Proposal Modal ── */}
-      {autoFixProposal && (
-        <div className="absolute inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#0a0f14] p-6 border-2 border-neon-emerald rounded-2xl shadow-[0_0_50px_rgba(0,255,153,0.15)] w-[600px] animate-slide-up">
-            <div className="flex justify-between items-start mb-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-neon-emerald/20 flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(0,255,153,0.3)] animate-pulse">🧬</div>
-                <div>
-                  <h2 className="text-neon-emerald font-bold uppercase tracking-widest text-lg">AutoFix Patch Proposal</h2>
-                  <p className="text-xs text-secondary uppercase tracking-wider font-mono">Target Entity: {autoFixProposal.node}</p>
-                </div>
-              </div>
-              <span className="px-2 py-1 bg-neon-emerald/20 text-neon-emerald border border-neon-emerald/40 rounded text-[10px] font-bold">HIGH CONFIDENCE</span>
+      {/* ── Top HUD ── */}
+      {showDock && stats && (
+        <div className="helix-hud helix-hud-floating">
+          <div className="hud-metric">
+            <span className="label">SYMBOLS:</span>
+            <span className="value">{stats.graph?.nodes || 0}</span>
+          </div>
+          <div className="hud-divider" />
+          <div className="hud-metric">
+            <span className="label">SYNAPSES:</span>
+            <span className="value">{stats.graph?.relationships || 0}</span>
+          </div>
+          <div className="hud-divider" />
+          <div className="hud-metric">
+            <span className="label">VECTORS:</span>
+            <span className="value">{stats.vectors?.points_count || 0}</span>
+          </div>
+        </div>
+      )}
+
+      {showDock && stats && (
+        <div className="helix-system-status">
+          <span className="label">SYSTEM ACTIVE</span>
+          <span className="value">{stats.graph?.nodes || 0} nodes</span>
+        </div>
+      )}
+
+      {/* ── Analysis Overlay (Ghost UI) ── */}
+      {analysisOpen && (selectedNode || swarmLogs.length > 0 || swarmActive) && (
+        <div className="helix-overlay helix-overlay--analysis" onClick={() => { setAnalysisOpen(false); setAnalysisDismissed(true); }}>
+          <div className="helix-overlay-panel helix-overlay-panel--analysis" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-[10px] uppercase tracking-widest text-muted font-bold">Analysis & Output</p>
+              <button
+                onClick={() => { setAnalysisOpen(false); setAnalysisDismissed(true); }}
+                className="helix-icon-button"
+                aria-label="Close analysis"
+              >
+                ✕
+              </button>
             </div>
 
-            <div className="bg-[#05080f] p-4 rounded-xl border border-white/5 mb-6">
-              <p className="text-neon-cyan text-[10px] font-bold uppercase tracking-widest mb-2">Issue / Vulnerability</p>
-              <p className="text-gray-400 text-xs mb-4 italic leading-relaxed bg-white/5 p-3 rounded">"{autoFixProposal.vulnerability}"</p>
+            {selectedNode && renderInfoPanel()}
 
-              <p className="text-neon-emerald text-[10px] font-bold uppercase tracking-widest mb-2">Recommended Code Patch</p>
-              <pre className="text-[11px] font-mono text-gray-300 bg-black/60 p-4 rounded border border-neon-emerald/20 overflow-x-auto max-h-48 custom-scrollbar">
-                <code>{autoFixProposal.proposal}</code>
+            {visionResult && (
+              <div className="helix-panel-subtle animate-fade-in mb-4">
+                <div className="flex items-center justify-between mb-4">
+                  <p className="text-[10px] text-neon-purple uppercase tracking-widest font-bold flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-neon-purple animate-pulse"></span>
+                    Visual Phenotype Diagnostic
+                  </p>
+                  <div className="flex flex-col items-end">
+                    <span className="text-[10px] text-muted font-mono uppercase">Health Score</span>
+                    <span className={`text-xl font-bold font-mono ${visionResult.score > 80 ? 'text-neon-emerald' : visionResult.score > 50 ? 'text-neon-yellow' : 'text-neon-pink'}`}>
+                      {visionResult.score}%
+                    </span>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <span className="text-[9px] text-muted uppercase tracking-widest block mb-1">Aesthetic Rating</span>
+                    <p className="text-secondary text-xs font-bold text-white italic">"{visionResult.aesthetic_rating}"</p>
+                  </div>
+
+                  {visionResult.anomalies && visionResult.anomalies.length > 0 && (
+                    <div>
+                      <span className="text-[9px] text-muted uppercase tracking-widest block mb-2">Structural Anomalies</span>
+                      <ul className="space-y-1">
+                        {visionResult.anomalies.map((anomaly, i) => (
+                          <li key={i} className="text-[10px] text-neon-pink flex gap-2">
+                            <span>⚠</span> <span>{anomaly}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {visionResult.suggestions && visionResult.suggestions.length > 0 && (
+                    <div>
+                      <span className="text-[9px] text-muted uppercase tracking-widest block mb-2">Refinement Suggestions</span>
+                      <ul className="space-y-1">
+                        {visionResult.suggestions.map((suggestion, i) => (
+                          <li key={i} className="text-[10px] text-neon-cyan flex gap-2">
+                            <span>🧬</span> <span>{suggestion}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {swarmActive && (
+              <div className="helix-panel-subtle">
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-[10px] text-neon-cyan uppercase tracking-widest font-bold flex items-center gap-2">
+                    <span className={`w-2 h-2 rounded-full ${swarmActive ? 'bg-neon-cyan animate-ping' : 'bg-secondary'}`}></span>
+                    Immune Swarm Monologue
+                  </p>
+                  <button onClick={() => setSwarmLogs([])} className="text-muted hover:text-white transition-colors text-xs">✕</button>
+                </div>
+                <div className="max-h-56 overflow-y-auto custom-scrollbar pr-2 space-y-1">
+                  {swarmLogs.map((log, i) => (
+                    <p key={i} className="text-[10px] font-mono text-gray-300 leading-tight">
+                      {log.startsWith('❌') ? <span className="text-neon-pink">{log}</span> :
+                        log.startsWith('✅') ? <span className="text-neon-emerald">{log}</span> :
+                          log.startsWith('🔍') ? <span className="text-neon-cyan">{log}</span> : log}
+                    </p>
+                  ))}
+                  <div id="swarm-logs-bottom"></div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ── CRISPR Proposal Card ── */}
+      {crisprProposal && (
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] w-[500px] animate-slide-up">
+          <div className="helix-panel p-6 border-2 border-neon-cyan">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-neon-emerald/20 flex items-center justify-center text-2xl animate-pulse">🧬</div>
+              <div>
+                <h2 className="text-neon-emerald font-bold uppercase tracking-widest text-lg">CRISPR Mutation Proposal</h2>
+                <p className="text-[10px] text-secondary uppercase tracking-wider">Target Entity: {crisprProposal.node}</p>
+              </div>
+            </div>
+
+            <div className="bg-[#0a0f14] p-4 rounded-xl border border-neon-cyan/20 mb-6 max-h-60 overflow-y-auto custom-scrollbar">
+              <p className="text-neon-cyan text-[11px] font-bold uppercase mb-2">Genetic Vulnerability Detected:</p>
+              <p className="text-gray-400 text-xs mb-4 italic">"{crisprProposal.vulnerability.substring(0, 200)}..."</p>
+
+              <p className="text-neon-emerald text-[11px] font-bold uppercase mb-2">Recommended DNA Slice (Mutation):</p>
+              <pre className="text-[10px] font-mono text-gray-300 bg-black/40 p-3 rounded border border-white/5 overflow-x-auto">
+                <code>{crisprProposal.proposal}</code>
               </pre>
             </div>
 
-            <div className="flex gap-4">
-              <button onClick={() => setCrisprProposal(null)} className="flex-1 bg-transparent border border-white/20 hover:border-white/40 text-gray-300 hover:text-white py-3 rounded-xl transition-colors text-xs uppercase tracking-widest font-bold">
-                Dismiss Proposal
+            <div className="flex flex-col gap-3">
+              <button
+                onClick={verifyMutation}
+                className="w-full helix-button-secondary py-3 text-xs border-neon-purple text-neon-purple hover:bg-neon-purple/10"
+              >
+                🛡️ Verify in Sandbox (Shadow Staging)
               </button>
-              <button onClick={verifyPatch} className="flex-1 bg-neon-purple/20 hover:bg-neon-purple/30 border border-neon-purple/50 text-neon-purple shadow-[0_0_15px_rgba(153,69,255,0.2)] py-3 rounded-xl transition-colors text-xs uppercase tracking-widest font-bold">
-                🛡️ Sandbox Verify
-              </button>
-              <button onClick={acceptPatch} className="flex-1 bg-neon-emerald text-[#05080f] hover:bg-[#00db80] shadow-[0_0_20px_rgba(0,255,153,0.4)] py-3 rounded-xl transition-colors text-xs uppercase tracking-widest font-bold">
-                Apply Patch
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Guide Modal Overlay */}
-      {guideOpen && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center p-8 bg-black/80 backdrop-blur-md" onClick={closeGuide}>
-          <div className="bg-[#0a0f14] max-w-4xl w-full h-[80vh] flex flex-col rounded-3xl border border-neon-cyan/20 shadow-[0_0_50px_rgba(0,229,255,0.1)] overflow-hidden" onClick={(e) => e.stopPropagation()}>
-            <div className="p-6 border-b border-white/10 flex justify-between items-center bg-[#0d1117]">
-              <h2 className="text-xl font-bold tracking-widest uppercase text-neon-cyan flex items-center gap-3">
-                <span className="text-3xl">⬡</span> Helix Operator Manual
-              </h2>
-              <button onClick={closeGuide} className="text-muted hover:text-white text-xl">✕</button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto custom-scrollbar p-8 prose prose-invert prose-sm max-w-none prose-headings:text-white prose-p:text-gray-300">
-              <h3>Code Architecture Intelligence</h3>
-              <p>Helix processes repositories into conceptual network graphs. Use the Sidebar to navigate your codebase, track statistics, and manage configurations.</p>
-
-              <div className="grid grid-cols-2 gap-6 mt-8">
-                <div className="bg-[#141a22] p-5 rounded-2xl border border-white/5 hover:border-neon-cyan/30 transition-colors">
-                  <h4 className="text-neon-cyan tracking-widest uppercase text-sm mb-2 font-bold">1. Ingestion</h4>
-                  <p className="text-xs text-gray-400 mt-0 leading-relaxed">Provide a GitHub URL or local path. The Engine will dissect the repository and extract semantic connections.</p>
-                </div>
-                <div className="bg-[#141a22] p-5 rounded-2xl border border-white/5 hover:border-neon-purple/30 transition-colors">
-                  <h4 className="text-neon-purple tracking-widest uppercase text-sm mb-2 font-bold">2. Exploration</h4>
-                  <p className="text-xs text-gray-400 mt-0 leading-relaxed">Click on nodes to view metadata, source code, and AI-generated component diagrams.</p>
-                </div>
-                <div className="bg-[#141a22] p-5 rounded-2xl border border-white/5 hover:border-neon-pink/30 transition-colors">
-                  <h4 className="text-neon-pink tracking-widest uppercase text-sm mb-2 font-bold">3. Neural Chat</h4>
-                  <p className="text-xs text-gray-400 mt-0 leading-relaxed">Ask questions in the right sidebar. The AI will traverse the code graph to answer system-level queries.</p>
-                </div>
-                <div className="bg-[#141a22] p-5 rounded-2xl border border-white/5 hover:border-neon-emerald/30 transition-colors">
-                  <h4 className="text-neon-emerald tracking-widest uppercase text-sm mb-2 font-bold">4. Agent System</h4>
-                  <p className="text-xs text-gray-400 mt-0 leading-relaxed">Deploy the agent to detect vulnerabilities, propose fixes, and sandbox changes automatically.</p>
-                </div>
-              </div>
-
-              <div className="mt-12">
-                <h4 className="text-white tracking-widest uppercase text-sm mb-6 font-bold border-b border-white/10 pb-2">System Architecture Flow</h4>
-                <div className="bg-[#05080f] p-6 rounded-2xl border border-white/5">
-                  <MermaidDiagram code={guideDiagram} />
-                </div>
-              </div>
-            </div>
-            {seedActive && (
-              <div className="p-6 bg-[#0d1117] border-t border-white/10 flex justify-end">
-                <button onClick={beginGuide} className="bg-neon-cyan hover:bg-[#00b8cc] text-[#05080f] font-bold py-3 px-8 rounded-xl transition-colors tracking-widest uppercase text-xs">
-                  Acknowledge & Start
+              <div className="flex gap-4">
+                <button
+                  onClick={acceptMutation}
+                  className="flex-1 helix-button-primary py-3 text-xs"
+                >
+                  Accept & Splicing DNA
+                </button>
+                <button
+                  onClick={() => setCrisprProposal(null)}
+                  className="flex-1 helix-button-secondary py-3 text-xs"
+                >
+                  Reject Mutation
                 </button>
               </div>
-            )}
+            </div>
           </div>
         </div>
       )}
 
-      {/* Settings Modal */}
-      {settingsOpen && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center p-8 bg-black/80 backdrop-blur-md" onClick={() => setSettingsOpen(false)}>
-          <div className="bg-[#0a0f14] w-[450px] flex flex-col rounded-3xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden" onClick={(e) => e.stopPropagation()}>
-            <div className="p-6 border-b border-white/10 flex justify-between items-center bg-[#0d1117]">
-              <h2 className="text-lg font-bold tracking-widest uppercase text-white flex items-center gap-3">
-                System Configuration
-              </h2>
-              <button onClick={() => setSettingsOpen(false)} className="text-muted hover:text-white text-xl">✕</button>
-            </div>
+      {/* ── Ghost Dock ── */}
+      {showDock && (
+        <div className="helix-dock-zone">
+          <div className="helix-dock">
+            <button
+              className="helix-dock-item"
+              onClick={() => setIngestOpen(true)}
+              aria-label="Ingestion"
+              data-label="Ingestion"
+              data-desc="Target a new repository"
+              title="Ingestion"
+            >
+              ⌂
+            </button>
+            <button
+              className="helix-dock-item"
+              onClick={() => { setSettingsSection("navigation"); setSettingsOpen(true); }}
+              aria-label="Navigation"
+              data-label="Navigation"
+              data-desc="Switch graph perspectives"
+              title="Navigation"
+            >
+              ⊙
+            </button>
+            <button
+              className="helix-dock-item"
+              onClick={() => setChatOpen(true)}
+              aria-label="Neural Link"
+              data-label="Neural Link"
+              data-desc="Interrogate the codebase"
+              title="Neural Link"
+            >
+              🧠
+            </button>
+            <button
+              className={`helix-dock-item helix-dock-item--primary ${swarmConnected ? "" : "helix-dock-item--offline"}`}
+              onClick={deploySwarm}
+              disabled={swarmActive}
+              aria-label="Immune Swarm"
+              data-label="Immune Swarm"
+              data-desc={swarmDockDesc}
+              title="Immune Swarm"
+            >
+              🧬
+            </button>
+            <button
+              className="helix-dock-item"
+              onClick={() => { setSettingsSection("environment"); setSettingsOpen(true); }}
+              aria-label="Environment"
+              data-label="Environment"
+              data-desc="Adjust depth & filters"
+              title="Environment"
+            >
+              ⚙
+            </button>
+          </div>
+        </div>
+      )}
 
-            <div className="p-8 space-y-8">
-              <div className="flex items-center justify-between">
+      {/* ── Overlays ── */}
+      {chatOpen && (
+        <div className="helix-overlay" onClick={() => setChatOpen(false)}>
+          <div className="helix-overlay-panel helix-overlay-panel--chat" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-[10px] uppercase tracking-widest text-muted font-bold">Neural Link</p>
+              <button onClick={() => setChatOpen(false)} className="helix-icon-button">✕</button>
+            </div>
+            <div className="helix-progress-map">
+              <p className="text-[10px] uppercase tracking-widest text-muted font-bold">Progress Map</p>
+              <div className="helix-progress-list">
+                {progressStages.map((stage) => (
+                  <div key={stage.id} className={`helix-progress-item ${stage.done ? "is-done" : ""}`}>
+                    <span className="helix-progress-dot" />
+                    <div className="helix-progress-copy">
+                      <span className="helix-progress-title">{stage.label}</span>
+                      <span className="helix-progress-desc">{stage.description}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <ChatPanel onResponse={handleChatResponse} showHeader={false} />
+          </div>
+        </div>
+      )}
+
+      {ingestOpen && (
+        <div className="helix-overlay" onClick={() => setIngestOpen(false)}>
+          <div className="helix-overlay-panel helix-overlay-panel--sm" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-[10px] uppercase tracking-widest text-muted font-bold">Target Sequence</p>
+              <button onClick={() => setIngestOpen(false)} className="helix-icon-button">✕</button>
+            </div>
+            <RepoRootNode
+              onSyncComplete={() => {
+                fetchGraphData();
+                markOnboarded();
+                setGuideExpanded(true);
+                setGuideOpen(true);
+              }}
+            />
+          </div>
+        </div>
+      )}
+
+      {settingsOpen && (
+        <div className="helix-overlay" onClick={() => setSettingsOpen(false)}>
+          <div className="helix-overlay-panel" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-[10px] uppercase tracking-widest text-muted font-bold">Settings</p>
+              <button onClick={() => setSettingsOpen(false)} className="helix-icon-button">✕</button>
+            </div>
+            <div className="flex flex-col gap-4">
+              <button
+                className="helix-button-secondary w-full"
+                onClick={() => { setGuideOpen(true); }}
+              >
+                Open Flow Guide
+              </button>
+              <div className={`flex flex-col gap-2 ${settingsSection === "navigation" ? "" : "opacity-70"}`}>
+                <p className="text-[10px] uppercase tracking-widest text-muted font-bold">Navigation Mode</p>
+                <div className="flex items-center gap-2 bg-[#0d1117] border border-[#141a33] rounded-xl p-1">
+                  <button
+                    onClick={() => setViewMode("graph")}
+                    className={`flex-1 py-1.5 text-[9px] uppercase tracking-wider font-bold rounded transition-all ${viewMode === "graph" ? "text-[#0d1117] bg-neon-cyan shadow-[0_0_15px_rgba(0,229,255,0.3)]" : "text-secondary hover:text-white"}`}
+                  >
+                    Graph
+                  </button>
+                  <button
+                    onClick={() => { setViewMode("cellular"); setHighlightNodes([]); }}
+                    className={`flex-1 py-1.5 text-[9px] uppercase tracking-wider font-bold rounded transition-all ${viewMode === "cellular" ? "text-[#0d1117] bg-neon-purple shadow-[0_0_15px_rgba(153,69,255,0.3)]" : "text-secondary hover:text-white"}`}
+                  >
+                    Cellular
+                  </button>
+                  <button
+                    onClick={() => setViewMode("directory")}
+                    className={`flex-1 py-1.5 text-[9px] uppercase tracking-wider font-bold rounded transition-all ${viewMode === "directory" ? "text-[#0d1117] bg-neon-emerald shadow-[0_0_15px_rgba(0,255,136,0.3)]" : "text-secondary hover:text-white"}`}
+                  >
+                    Directory
+                  </button>
+                </div>
+              </div>
+
+              {viewMode === "graph" && (
+                <div className="flex flex-col gap-2">
+                  <p className="text-[10px] uppercase tracking-widest text-muted font-bold">Graph Depth</p>
+                  <div className="flex items-center gap-2 bg-[#0d1117] border border-[#141a33] rounded-xl p-1">
+                    <button
+                      onClick={() => {
+                        setGraphMode("macro");
+                        fetchGraphData("macro");
+                      }}
+                      className={`flex-1 py-1.5 text-[9px] uppercase tracking-wider font-bold rounded transition-all ${graphMode === "macro" ? "text-[#0d1117] bg-neon-emerald shadow-[0_0_15px_rgba(0,255,136,0.3)]" : "text-secondary hover:text-white"}`}
+                    >
+                      Macro
+                    </button>
+                    <button
+                      onClick={() => {
+                        setGraphMode("deep");
+                        fetchGraphData("deep");
+                      }}
+                      className={`flex-1 py-1.5 text-[9px] uppercase tracking-wider font-bold rounded transition-all ${graphMode === "deep" ? "text-[#0d1117] bg-neon-pink shadow-[0_0_15px_rgba(255,0,170,0.3)]" : "text-secondary hover:text-white"}`}
+                    >
+                      Deep
+                    </button>
+                    <button
+                      onClick={() => {
+                        setGraphMode("temporal");
+                        fetchGraphData("temporal");
+                      }}
+                      className={`flex-1 py-1.5 text-[9px] uppercase tracking-wider font-bold rounded transition-all ${graphMode === "temporal" ? "text-[#0d1117] bg-neon-cyan shadow-[0_0_15px_rgba(0,229,255,0.3)]" : "text-secondary hover:text-white"}`}
+                    >
+                      4D Timeline
+                    </button>
+                  </div>
+
+                  {graphMode === "temporal" && timeline.length > 0 && (
+                    <div className="mt-4 pt-4 border-t border-white/5 space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-[10px] text-neon-cyan font-bold tracking-widest uppercase">Temporal Morphogenesis</span>
+                        <span className="text-[9px] text-secondary font-mono">T-{timeline.length}</span>
+                      </div>
+
+                      <input
+                        type="range"
+                        min={timeRange.min}
+                        max={timeRange.max}
+                        step={1}
+                        value={currentTimestamp}
+                        onChange={(e) => setCurrentTimestamp(Number(e.target.value))}
+                        className="w-full helix-scrubber"
+                      />
+
+                      <div className="bg-black/40 p-2 border border-white/5 rounded">
+                        {timeline.find(c => c.timestamp <= currentTimestamp) ? (
+                          <div className="space-y-1">
+                            <p className="text-[10px] text-white font-mono truncate">
+                              {timeline.find(c => c.timestamp <= currentTimestamp).hash.substring(0, 8)}
+                            </p>
+                            <p className="text-[9px] text-secondary line-clamp-2">
+                              {timeline.find(c => c.timestamp <= currentTimestamp).message}
+                            </p>
+                            <p className="text-[8px] text-muted text-right">
+                              {new Date(timeline.find(c => c.timestamp <= currentTimestamp).timestamp * 1000).toLocaleString()}
+                            </p>
+                          </div>
+                        ) : (
+                          <p className="text-[9px] text-muted italic">No state recorded at T-zero</p>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="flex flex-col gap-1">
+                <p className="text-[10px] uppercase tracking-widest text-muted font-bold">Search / Interrogate</p>
+                <p className="text-[9px] text-secondary uppercase tracking-wider">Ask a question or locate a symbol</p>
+                <form onSubmit={handleSearch} className="relative group">
+                  <input
+                    type="text"
+                    className="search-input pr-10"
+                    placeholder={viewMode === "cellular" ? "Type a question for the agent..." : "Search classes, functions, modules..."}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted group-focus-within:text-neon-cyan transition-colors">
+                    ⏎
+                  </div>
+                </form>
+              </div>
+
+              <div className={`flex items-center justify-between gap-4 ${settingsSection === "environment" ? "" : "opacity-70"}`}>
                 <div>
-                  <label className="block text-sm font-bold text-white mb-1 uppercase tracking-widest">Autonomous Fixing</label>
-                  <p className="text-xs text-muted">Allow agent to automatically apply patches</p>
+                  <p className="text-[10px] uppercase tracking-widest text-muted font-bold">Auto-Evolve</p>
+                  <p className="text-[9px] text-secondary uppercase tracking-wider">Zero-click mutations</p>
                 </div>
                 <button
-                  type="button"
-                  onClick={() => {
-                    const next = !autoEvolveRef.current;
-                    autoEvolveRef.current = next;
-                    setAgentLogs(prev => [...prev]);
-                  }}
-                  className={`relative w-12 h-6 rounded-full transition-colors ${autoEvolveRef.current ? "bg-neon-emerald/70 shadow-[0_0_10px_rgba(0,255,153,0.5)]" : "bg-white/10"}`}
+                  onClick={() => setAutoEvolve(prev => !prev)}
+                  aria-pressed={autoEvolve}
+                  className={`relative w-12 h-6 rounded-full transition-colors ${autoEvolve ? "bg-neon-emerald/70" : "bg-white/10"}`}
+                  title={autoEvolve ? "Auto-Evolve enabled" : "Auto-Evolve disabled"}
                 >
-                  <span className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform ${autoEvolveRef.current ? "translate-x-6" : ""}`} />
+                  <span
+                    className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform ${autoEvolve ? "translate-x-6" : ""}`}
+                  />
                 </button>
               </div>
 
-              <div>
-                <label className="block text-sm uppercase tracking-widest font-bold text-white mb-3">Graph Environment Density</label>
-                <div className="flex flex-col gap-2">
-                  <button className="flex items-center justify-between p-3 rounded-xl border border-neon-cyan/40 bg-neon-cyan/10 text-neon-cyan text-sm">
-                    <span>Comfortable (Default)</span>
-                    <span className="w-4 h-4 rounded-full bg-neon-cyan/50 flex flex-col justify-center items-center"><span className="w-2 h-2 rounded-full bg-neon-cyan"></span></span>
-                  </button>
-                  <button className="flex items-center justify-between p-3 rounded-xl border border-white/10 hover:border-white/30 text-gray-300 text-sm transition-colors">
-                    <span>Terminal / Compact</span>
-                    <span className="w-4 h-4 rounded-full bg-white/10"></span>
-                  </button>
-                </div>
+              <div className="pt-4 border-t border-white/5">
+                <button
+                  onClick={handleVisualDiagnostic}
+                  disabled={capturingVision}
+                  className="w-full helix-button-primary py-3 flex items-center justify-center gap-3 text-xs bg-neon-purple/20 border-neon-purple hover:bg-neon-purple/30 group mb-6"
+                >
+                  <span className={`w-2 h-2 rounded-full ${capturingVision ? "bg-neon-pink animate-ping" : "bg-neon-cyan"}`}></span>
+                  {capturingVision ? "SCANNING PHENOTYPE..." : "RUN VISUAL DIAGNOSTIC"}
+                </button>
               </div>
-            </div>
-            <div className="p-6 bg-[#0d1117] border-t border-white/10">
-              <button onClick={() => setSettingsOpen(false)} className="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-3 rounded-xl transition-colors tracking-widest uppercase text-xs">
-                Save Parameters
-              </button>
+
+              <div className="flex flex-col gap-2">
+                <LegendItem color="#00ff88" label="Function" />
+                <LegendItem color="#9945ff" label="Class" />
+                <LegendItem color="#00e5ff" label="Module" />
+                <LegendItem color="#ff00aa" label="Calls" />
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Target Ingest Modal Overlay */}
-      {ingestOpen && (
-        <div className="absolute inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-md p-4" onClick={() => setIngestOpen(false)}>
-          <div className="bg-[#0a0f14] w-[450px] flex flex-col rounded-3xl border border-neon-cyan/30 shadow-[0_0_50px_rgba(0,229,255,0.1)] overflow-hidden" onClick={e => e.stopPropagation()}>
-            <div className="p-5 border-b border-white/10 flex justify-between items-center bg-[#0d1117]">
-              <h2 className="text-sm font-bold tracking-widest uppercase text-neon-cyan flex items-center gap-3">
-                Target Sequence Acquisition
-              </h2>
-              <button onClick={() => setIngestOpen(false)} className="text-muted hover:text-white text-lg">✕</button>
+
+      {guideOpen && (
+        <div className="helix-overlay helix-overlay--guide" onClick={closeGuide}>
+          <div className="helix-overlay-panel helix-overlay-panel--guide" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex flex-col gap-1">
+                <p className="text-[10px] uppercase tracking-widest text-muted font-bold">Flow Guide</p>
+                <p className="text-secondary text-xs">Start here and follow the system path.</p>
+              </div>
+              <button onClick={closeGuide} className="helix-icon-button" aria-label="Close guide">✕</button>
             </div>
-            <div className="p-6">
-              <RepoRootNode
-                onSyncComplete={() => {
-                  fetchGraphData();
-                  markOnboarded();
-                  setTimeout(() => { setIngestOpen(false); }, 1500);
-                }}
-              />
+
+            <div className="helix-guide-grid">
+              <div className="helix-guide-stack">
+                <p className="text-[10px] uppercase tracking-widest text-muted font-bold">Quick Start</p>
+                <ol className="helix-guide-list">
+                  <li>Ingest a repository to seed the organism.</li>
+                  <li>Explore the graph and select a node for analysis.</li>
+                  <li>Use Neural Link to ask questions or deploy the Immune Swarm.</li>
+                </ol>
+
+                <div className="helix-guide-actions">
+                  <button className="helix-button-primary" onClick={beginGuide}>
+                    Start With Ingestion
+                  </button>
+                  <button className="helix-button-secondary" onClick={closeGuide}>
+                    Close Guide
+                  </button>
+                </div>
+
+                <button
+                  className="helix-ghost-link"
+                  onClick={() => setGuideExpanded(prev => !prev)}
+                >
+                  {guideExpanded ? "Hide Full Flow" : "Show Full Flow"}
+                </button>
+              </div>
+
+              {guideExpanded && (
+                <div className="helix-guide-flow">
+                  <MermaidDiagram code={guideDiagram} />
+                </div>
+              )}
             </div>
           </div>
         </div>

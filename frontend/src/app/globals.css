@@ -278,7 +278,7 @@ body {
 
 /* ─── Cellular Graph Tooltip ─────────────────────────────────────── */
 
-.hierarchical-tooltip {
+.cellular-tooltip {
   position: fixed;
   pointer-events: none;
   z-index: 100;
@@ -294,7 +294,7 @@ body {
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
 }
 
-.hierarchical-tooltip-type {
+.cellular-tooltip-type {
   font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -302,7 +302,7 @@ body {
   margin-bottom: 4px;
 }
 
-.hierarchical-tooltip-name {
+.cellular-tooltip-name {
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--text-primary);
@@ -311,13 +311,13 @@ body {
   margin-bottom: 6px;
 }
 
-.hierarchical-tooltip-meta {
+.cellular-tooltip-meta {
   font-size: 0.7rem;
   color: var(--text-muted);
   margin-bottom: 6px;
 }
 
-.hierarchical-tooltip-doc {
+.cellular-tooltip-doc {
   font-size: 0.7rem;
   color: var(--text-secondary);
   line-height: 1.5;

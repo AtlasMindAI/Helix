@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function RepoRootNode({ onSyncComplete }) {
     const [repoUrl, setRepoUrl] = useState("");
@@ -33,39 +33,16 @@ export default function RepoRootNode({ onSyncComplete }) {
                 throw new Error(detail);
             }
 
-            // We do NOT set status to 'synced' here! 
-            // We wait for the 'helix_ingestion_complete' event from the websocket.
+            setStatus("synced");
+            if (onSyncComplete) {
+                onSyncComplete(); // Trigger graph reload
+            }
         } catch (err) {
             console.error(err);
             setErrorMsg(err.message);
             setStatus("error");
         }
     };
-
-    useEffect(() => {
-        const handleComplete = (e) => {
-            setStatus("synced");
-            if (onSyncComplete) {
-                onSyncComplete(); // Trigger graph reload
-            }
-        };
-        const handleFail = (e) => {
-            setStatus("error");
-            setErrorMsg(e.detail || "Ingestion failed during processing.");
-        };
-
-        if (typeof window !== "undefined") {
-            window.addEventListener("helix_ingestion_complete", handleComplete);
-            window.addEventListener("helix_ingestion_failed", handleFail);
-        }
-
-        return () => {
-            if (typeof window !== "undefined") {
-                window.removeEventListener("helix_ingestion_complete", handleComplete);
-                window.removeEventListener("helix_ingestion_failed", handleFail);
-            }
-        };
-    }, [onSyncComplete]);
 
     // Determine pulse color and glow based on status
     let pulseColor = "border-[rgba(255,255,255,0.1)] shadow-none";

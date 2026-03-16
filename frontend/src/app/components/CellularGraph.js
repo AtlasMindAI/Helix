@@ -18,7 +18,7 @@ const TYPE_FILLS = {
     Function: "rgba(0, 255, 136, 0.15)",
 };
 
-export default function HierarchicalGraph({ data, onNodeClick, highlightNodes = [] }) {
+export default function CellularGraph({ data, onNodeClick, highlightNodes = [] }) {
     const containerRef = useRef();
     const svgRef = useRef();
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
